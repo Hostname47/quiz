@@ -1,32 +1,22 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 type InitialState = {
-  lives: number;
-  helps: number;
-  money: number;
-  currentLevel: number;
+  username: string;
+  gender: string;
+  avatar: string;
 };
 
 const initialState: InitialState = {
-  lives: 3,
-  helps: 3,
-  money: 60,
-  currentLevel: 0,
+  username: '',
+  gender: '',
+  avatar: '',
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    play: (state, action: PayloadAction<boolean>) => {
-      if (action.payload) {
-        state.currentLevel++;
-      } else {
-        state.lives--;
-      }
-    },
-  },
+  reducers: {},
 });
 
 export default userSlice.reducer;
-export const {play} = userSlice.actions;
+export const {} = userSlice.actions;
