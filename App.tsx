@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaView, StatusBar, View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
@@ -30,6 +30,14 @@ function App(): JSX.Element {
             <Stack.Screen name="Shop" component={Shop} />
             <Stack.Screen name="More" component={More} />
           </Stack.Navigator>
+          <View
+            style={{
+              height: 50,
+              width: 320,
+              backgroundColor: 'black',
+              alignSelf: 'center',
+            }}
+          />
         </Provider>
       </SafeAreaView>
     </NavigationContainer>

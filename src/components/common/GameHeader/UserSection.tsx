@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     width: 80,
   },
   avatar: {
-    height: 44,
-    width: 44,
+    height: 40,
+    width: 40,
     marginBottom: 4,
     backgroundColor: '#a0b2bc',
     borderRadius: 30,
