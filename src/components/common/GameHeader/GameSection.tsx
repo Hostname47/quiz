@@ -13,7 +13,9 @@ const GameSection = () => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.segment} activeOpacity={0.5}>
         <DollarIcon style={styles.segmentIcon} fill="#6cdd6e" />
-        <Text style={styles.segmentValue}>{game.money}</Text>
+        <Text style={styles.segmentValue}>
+          {game.initialized ? game.money : '-'}
+        </Text>
         <PlusIcon style={styles.plusIcon} fill="#6cdd6e" />
       </TouchableOpacity>
       <View style={[styles.segment, styles.helpsSegment]}>
@@ -21,12 +23,16 @@ const GameSection = () => {
           style={[styles.segmentIcon, styles.helpIcon]}
           fill="#ede43b"
         />
-        <Text style={styles.segmentValue}>{game.helps}</Text>
+        <Text style={styles.segmentValue}>
+          {game.initialized ? game.helps : '-'}
+        </Text>
         <Text style={styles.helpsLabel}>help</Text>
       </View>
       <TouchableOpacity style={styles.segment} activeOpacity={0.5}>
         <HeartIcon style={styles.segmentIcon} fill="#ff5656" />
-        <Text style={styles.segmentValue}>{game.lives}</Text>
+        <Text style={styles.segmentValue}>
+          {game.initialized ? game.lives : '-'}
+        </Text>
         <PlusIcon style={styles.plusIcon} fill="#ff5656" />
       </TouchableOpacity>
     </View>

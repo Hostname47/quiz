@@ -9,6 +9,7 @@ const avatars = [
   require('../../../assets/avatars/3.png'),
   require('../../../assets/avatars/4.png'),
   require('../../../assets/avatars/5.png'),
+  require('../../../assets/avatars/6.png'),
 ];
 
 const UserSection = () => {
@@ -16,9 +17,12 @@ const UserSection = () => {
 
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.4}>
-      <Image source={avatars[user.avatar]} style={styles.avatar} />
+      <Image
+        source={user.initialized ? avatars[user.avatar] : avatars[6]} // When the user is not initialized yet, the image bacjkground will shown as a glimmer
+        style={styles.avatar}
+      />
       <Text numberOfLines={1} style={styles.pseudo}>
-        {user.pseudo}
+        {user.initialized ? '#' + user.pseudo : '- - -'}
       </Text>
     </TouchableOpacity>
   );
@@ -43,6 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   pseudo: {
-    fontSize: 12,
+    fontSize: 11,
   },
 });

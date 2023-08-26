@@ -1,9 +1,23 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
 import UserSection from './UserSection';
 import GameSection from './GameSection';
+import {useAppDispatch} from '../../../app/hooks';
+import {initializeGameAndUser} from '../../../features/init';
 
 const GameHeader = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      dispatch(initializeGameAndUser());
+    }, 1200);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <UserSection />
@@ -21,7 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#373a42',
     borderBottomWidth: 1,
-    borderBottomColor: '#424651',
+    borderBottomColor: '#5a6070',
   },
   separator: {
     width: 1,
