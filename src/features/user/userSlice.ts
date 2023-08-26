@@ -1,15 +1,15 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 type InitialState = {
-  username: string;
-  gender: string;
-  avatar: string;
+  initialized: boolean;
+  pseudo: string;
+  avatar: number;
 };
 
 const initialState: InitialState = {
-  username: '',
-  gender: '',
-  avatar: '',
+  initialized: false,
+  pseudo: '#pseudo',
+  avatar: 0,
 };
 
 const userSlice = createSlice({

@@ -6,7 +6,6 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <GameHeader />
-      <Text>Home</Text>
     </View>
   );
 };

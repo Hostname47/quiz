@@ -7,6 +7,7 @@ const GameHeader = () => {
   return (
     <View style={styles.container}>
       <UserSection />
+      <View style={styles.separator} />
       <GameSection />
     </View>
   );
@@ -16,10 +17,14 @@ export default GameHeader;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    height: 76,
     flexDirection: 'row',
     backgroundColor: '#373a42',
     borderBottomWidth: 1,
     borderBottomColor: '#424651',
+  },
+  separator: {
+    width: 1,
+    backgroundColor: '#5a6070',
   },
 });

@@ -1,6 +1,7 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 type InitialState = {
+  initialized: boolean;
   lives: number;
   helps: number;
   money: number;
@@ -8,6 +9,7 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
+  initialized: false,
   lives: 3,
   helps: 3,
   money: 60,
