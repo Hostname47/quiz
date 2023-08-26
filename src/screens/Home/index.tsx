@@ -1,9 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import GameHeader from '../../components/common/GameHeader';
 
 const Home = () => {
   return (
-    <View>
+    <View style={styles.container}>
+      <GameHeader />
       <Text>Home</Text>
     </View>
   );
@@ -11,4 +13,6 @@ const Home = () => {
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {},
+});

@@ -1,10 +1,14 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const GameHeader = () => {
-  return <View></View>;
+const Shop = () => {
+  return (
+    <View>
+      <Text>Shop</Text>
+    </View>
+  );
 };
 
-export default GameHeader;
+export default Shop;
 
 const styles = StyleSheet.create({});

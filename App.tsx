@@ -12,6 +12,7 @@ import More from './src/screens/More';
 import {navigationTheme} from './src/utils/navigation-theme';
 import Header from './src/components/common/Header';
 import {RootStackParamList} from './src/utils/types';
+import Shop from './src/screens/Shop';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,6 +27,7 @@ function App(): JSX.Element {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Quizzes" component={Quizzes} />
             <Stack.Screen name="QuizPlayer" component={QuizPlayer} />
+            <Stack.Screen name="Shop" component={Shop} />
             <Stack.Screen name="More" component={More} />
           </Stack.Navigator>
         </Provider>
