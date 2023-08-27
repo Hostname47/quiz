@@ -18,6 +18,7 @@ const UserSection = () => {
   return (
     <TouchableOpacity style={styles.container} activeOpacity={0.4}>
       <Image
+        testID="user-avatar"
         source={user.initialized ? avatars[user.avatar] : avatars[6]} // When the user is not initialized yet, the image bacjkground will shown as a glimmer
         style={styles.avatar}
       />

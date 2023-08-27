@@ -27,6 +27,7 @@ const Home = ({navigation}: {navigation: any}) => {
 
       <View style={styles.bootstrapImageContainer}>
         <Image
+          accessibilityHint="Welcome image that shows in home screen"
           source={require('../../assets/bootstrap-image.jpg')}
           style={styles.bootstrapImage}
         />
@@ -34,6 +35,7 @@ const Home = ({navigation}: {navigation: any}) => {
 
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
+          accessibilityHint="Shop button to go to shop screen"
           style={styles.button}
           onPress={() => navigation.navigate('Shop')}>
           <ShopIcon fill="#e3e8ed" style={styles.buttonIcon} />
@@ -53,12 +55,13 @@ const Home = ({navigation}: {navigation: any}) => {
       </View>
 
       <TouchableOpacity
+        accessibilityHint="Press here to start"
         style={[styles.button, styles.playButton]}
         onPress={() => navigation.navigate('Quizzes')}>
         <PlayIcon fill="#4fbeff" style={styles.buttonIcon} />
         <Space distance={12} />
         <Txt type="ExtraBold" style={styles.playButtonTitle}>
-          Tap to start
+          Press here to start
         </Txt>
       </TouchableOpacity>
     </View>
