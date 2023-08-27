@@ -11,10 +11,11 @@ import QuizPlayer from './src/screens/QuizPlayer';
 import More from './src/screens/More';
 import {navigationTheme} from './src/utils/navigation-theme';
 import Header from './src/partials/Header';
-import {RootStackParamList} from './src/utils/types';
+// import {RootStackParamList} from './src/utils/types';
 import Shop from './src/screens/Shop';
 
-const Stack = createStackNavigator<RootStackParamList>();
+// const {Screen, Navigator} = createStackNavigator<RootStackParamList>(); // temporarily disable typing navigation
+const {Screen, Navigator} = createStackNavigator();
 
 function App(): JSX.Element {
   return (
@@ -23,27 +24,27 @@ function App(): JSX.Element {
         <StatusBar backgroundColor="#191b1e" />
         <Provider store={store}>
           <Header />
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Quizzes" component={Quizzes} />
-            <Stack.Screen name="QuizPlayer" component={QuizPlayer} />
-            <Stack.Screen name="Shop" component={Shop} />
-            <Stack.Screen name="More" component={More} />
-          </Stack.Navigator>
-          <View
-            style={{
-              height: 50,
-              width: 320,
-              backgroundColor: 'black',
-              alignSelf: 'center',
-            }}
-          />
+          <Navigator screenOptions={{headerShown: false}}>
+            <Screen name="Home" component={Home} />
+            <Screen name="Quizzes" component={Quizzes} />
+            <Screen name="QuizPlayer" component={QuizPlayer} />
+            <Screen name="Shop" component={Shop} />
+            <Screen name="More" component={More} />
+          </Navigator>
+          <View style={styles.banner} />
         </Provider>
       </SafeAreaView>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  banner: {
+    height: 50,
+    width: 320,
+    backgroundColor: 'black',
+    alignSelf: 'center',
+  },
+});
 
 export default App;

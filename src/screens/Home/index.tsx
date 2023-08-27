@@ -7,9 +7,13 @@ import ShopIcon from '../../components/icons/ShopIcon';
 import Space from '../../components/common/Space';
 import GearIcon from '../../components/icons/GearIcon';
 import PlayIcon from '../../components/icons/PlayIcon';
-import {StackNavigationProps} from '../../utils/types';
+// import {StackNavigationProps} from '../../utils/types';
 
-const Home = ({navigation}: StackNavigationProps) => {
+/**
+ * We'll enable typing later
+ */
+// const Home = ({navigation}: StackNavigationProps) => {
+const Home = ({navigation}: {navigation: any}) => {
   return (
     <View style={styles.container}>
       <GameHeader />
