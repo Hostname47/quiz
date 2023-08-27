@@ -71,3 +71,10 @@ describe('Testing navigation actions', () => {
     expect(navigation.navigate).toBeCalledWith('Quizzes');
   });
 });
+
+/**
+ * For settings button, when the user press it, a bottom sheet should
+ * appear with sound and more apps.
+ * For that purpose, we'll start using TDD here by writing tests first and implement
+ * this feature by letting tests drive the development.
+ */
