@@ -1,10 +1,10 @@
 import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import DollarIcon from '../../icons/DollarIcon';
-import {useAppSelector} from '../../../app/hooks';
-import PlusIcon from '../../icons/PlusIcon';
-import HeartIcon from '../../icons/HeartIcon';
-import HelpIcon from '../../icons/HelpIcon';
+import DollarIcon from '../../components/icons/DollarIcon';
+import {useAppSelector} from '../../app/hooks';
+import PlusIcon from '../../components/icons/PlusIcon';
+import HeartIcon from '../../components/icons/HeartIcon';
+import HelpIcon from '../../components/icons/HelpIcon';
 
 const GameSection = () => {
   const game = useAppSelector(state => state.game);

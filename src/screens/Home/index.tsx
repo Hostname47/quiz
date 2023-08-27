@@ -1,14 +1,15 @@
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import React from 'react';
-import GameHeader from '../../components/common/GameHeader';
+import GameHeader from '../../partials/GameHeader';
 import Txt from '../../components/common/Txt';
 import QuestionIcon from '../../components/icons/QuestionIcon';
 import ShopIcon from '../../components/icons/ShopIcon';
 import Space from '../../components/common/Space';
 import GearIcon from '../../components/icons/GearIcon';
 import PlayIcon from '../../components/icons/PlayIcon';
+import {StackNavigationProps} from '../../utils/types';
 
-const Home = ({navigation}) => {
+const Home = ({navigation}: StackNavigationProps) => {
   return (
     <View style={styles.container}>
       <GameHeader />

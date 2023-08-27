@@ -1,15 +1,15 @@
 import {StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
 import React from 'react';
-import {useAppSelector} from '../../../app/hooks';
+import {useAppSelector} from '../../app/hooks';
 
 const avatars = [
-  require('../../../assets/avatars/0.png'),
-  require('../../../assets/avatars/1.png'),
-  require('../../../assets/avatars/2.png'),
-  require('../../../assets/avatars/3.png'),
-  require('../../../assets/avatars/4.png'),
-  require('../../../assets/avatars/5.png'),
-  require('../../../assets/avatars/6.png'),
+  require('../../assets/avatars/0.png'),
+  require('../../assets/avatars/1.png'),
+  require('../../assets/avatars/2.png'),
+  require('../../assets/avatars/3.png'),
+  require('../../assets/avatars/4.png'),
+  require('../../assets/avatars/5.png'),
+  require('../../assets/avatars/6.png'),
 ];
 
 const UserSection = () => {

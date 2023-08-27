@@ -3,8 +3,8 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 // import LogoText from '../icons/LogoText';
 // import Logo from '../icons/Logo';
-import MenuIcon from '../icons/MenuIcon';
-import {StackNavigation} from '../../utils/types';
+import MenuIcon from '../components/icons/MenuIcon';
+import {StackNavigation} from '../utils/types';
 
 const Header = () => {
   const {navigate} = useNavigation<StackNavigation>();

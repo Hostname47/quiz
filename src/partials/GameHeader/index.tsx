@@ -2,8 +2,8 @@ import {StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 import UserSection from './UserSection';
 import GameSection from './GameSection';
-import {useAppDispatch} from '../../../app/hooks';
-import {initializeGameAndUser} from '../../../features/init';
+import {useAppDispatch} from '../../app/hooks';
+import {initializeGameAndUser} from '../../features/init';
 
 const GameHeader = () => {
   const dispatch = useAppDispatch();

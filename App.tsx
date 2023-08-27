@@ -10,7 +10,7 @@ import Quizzes from './src/screens/Quizzes';
 import QuizPlayer from './src/screens/QuizPlayer';
 import More from './src/screens/More';
 import {navigationTheme} from './src/utils/navigation-theme';
-import Header from './src/components/common/Header';
+import Header from './src/partials/Header';
 import {RootStackParamList} from './src/utils/types';
 import Shop from './src/screens/Shop';
 
