@@ -34,7 +34,6 @@ export const initializeUser = createAsyncThunk(
 
         return rejectWithValue('User is not initialized');
       }
-
       return JSON.parse(userData);
     } catch (error: any) {
       return rejectWithValue(error.message);

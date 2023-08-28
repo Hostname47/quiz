@@ -1,7 +1,9 @@
 import {screen, fireEvent, waitFor, act} from '@testing-library/react-native';
 import {cleanup} from '@testing-library/react-native';
-import {Image} from 'react-native';
+import {Image, Linking} from 'react-native';
 import Home from '../src/screens/Home';
+import {reduxRender} from '../src/helpers/test-helpers/reduxRender';
+import {DEV_APP_STORE_URL} from '@env';
 
 const navigation = {navigate: jest.fn()};
 
@@ -79,6 +81,26 @@ describe('Testing navigation actions', () => {
     await waitFor(() => {
       fireEvent(startButton, 'press');
       expect(navigation.navigate).toBeCalledWith('Quizzes');
+    });
+  });
+
+  it.only('Should go to dev store when more apps button pressed in settings', async () => {
+    const linkingSpy = jest.spyOn(Linking, 'openURL');
+
+    const settingsButton = screen.getByTestId('settings-button');
+    act(() => {
+      fireEvent(settingsButton, 'press');
+    });
+
+    const button = screen.getByTestId('dev-store-button');
+    expect(button).toBeTruthy();
+    act(() => {
+      fireEvent.press(button);
+    });
+
+    await waitFor(() => {
+      expect(linkingSpy).toHaveBeenCalled();
+      expect(linkingSpy).toBeCalledWith(DEV_APP_STORE_URL);
     });
   });
 });

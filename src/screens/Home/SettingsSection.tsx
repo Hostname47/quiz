@@ -1,11 +1,13 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import {Linking, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React from 'react';
 import Modal from '../../components/Modal';
 import Txt from '../../components/common/Txt';
 import MusicIcon from '../../components/icons/MusicIcon';
 import XIcon from '../../components/icons/XIcon';
 import Space from '../../components/common/Space';
 import AppsIcon from '../../components/icons/AppsIcon';
+import {DEV_APP_STORE_URL} from '@env';
+import {useAppSelector} from '../../app/hooks';
 
 type SettingsSectionProps = {
   settingsState: boolean;
@@ -16,6 +18,16 @@ const SettingsSection = ({
   settingsState,
   closeSettings,
 }: SettingsSectionProps) => {
+  const goToDevStore = async () => {
+    const url = DEV_APP_STORE_URL;
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    }
+  };
+  const app = useAppSelector(state => state.app);
+
   return (
     <Modal
       testID="settings-modal"
@@ -34,7 +46,7 @@ const SettingsSection = ({
         <View style={styles.settingsSegment}>
           <TouchableOpacity style={styles.settingsButton}>
             <MusicIcon style={styles.settingsButtonIcon} />
-            <View style={styles.noMusicLine} />
+            {!app.music && <View style={styles.noMusicLine} />}
           </TouchableOpacity>
           <Txt type="Bold" style={styles.settingsButtonTitle}>
             Music
@@ -42,7 +54,10 @@ const SettingsSection = ({
         </View>
         <Space distance={40} />
         <View style={styles.settingsSegment}>
-          <TouchableOpacity style={styles.settingsButton}>
+          <TouchableOpacity
+            style={styles.settingsButton}
+            testID="dev-store-button"
+            onPress={goToDevStore}>
             <AppsIcon style={styles.settingsButtonIcon} />
           </TouchableOpacity>
           <Txt type="Bold" style={styles.settingsButtonTitle}>
