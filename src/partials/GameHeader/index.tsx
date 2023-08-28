@@ -9,13 +9,7 @@ const GameHeader = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      dispatch(initializeGameAndUser());
-    }, 1200);
-
-    return () => {
-      clearTimeout(timeout);
-    };
+    dispatch(initializeGameAndUser());
   }, []);
 
   return (

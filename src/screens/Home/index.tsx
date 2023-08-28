@@ -7,17 +7,24 @@ import ShopIcon from '../../components/icons/ShopIcon';
 import Space from '../../components/common/Space';
 import GearIcon from '../../components/icons/GearIcon';
 import PlayIcon from '../../components/icons/PlayIcon';
-import Modal from '../../components/Modal';
-import MusicIcon from '../../components/icons/MusicIcon';
-import AppsIcon from '../../components/icons/AppsIcon';
+import SettingsSection from './SettingsSection';
 // import {StackNavigationProps} from '../../utils/types';
+import {useAppSelector} from '../../app/hooks';
 
 /**
  * We'll enable typing later
  */
 // const Home = ({navigation}: StackNavigationProps) => {
 const Home = ({navigation}: {navigation: any}) => {
-  const [settingsState, setSettingsState] = useState(true);
+  const game = useAppSelector(state => state.game);
+  const [settingsState, setSettingsState] = useState(false);
+
+  const openSettings = () => {
+    setSettingsState(true);
+  };
+  const closeSettings = () => {
+    setSettingsState(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -39,8 +46,10 @@ const Home = ({navigation}: {navigation: any}) => {
       </View>
 
       <View style={styles.buttonsContainer}>
+        {/* Store button */}
         <TouchableOpacity
-          accessibilityHint="Shop button to go to shop screen"
+          disabled={!game.initialized}
+          testID="shop-button"
           style={styles.button}
           onPress={() => navigation.navigate('Shop')}
           activeOpacity={0.5}>
@@ -51,9 +60,12 @@ const Home = ({navigation}: {navigation: any}) => {
           </Txt>
         </TouchableOpacity>
         <Space distance={12} />
+        {/* Settings button */}
         <TouchableOpacity
+          disabled={!game.initialized}
+          testID="settings-button"
           style={styles.button}
-          onPress={() => {}}
+          onPress={openSettings}
           activeOpacity={0.5}>
           <GearIcon fill="#e3e8ed" style={styles.buttonIcon} />
           <Space distance={8} />
@@ -62,9 +74,10 @@ const Home = ({navigation}: {navigation: any}) => {
           </Txt>
         </TouchableOpacity>
       </View>
-
+      {/* Play button */}
       <TouchableOpacity
-        accessibilityHint="Press here to start"
+        disabled={!game.initialized}
+        testID="play-button"
         style={[styles.button, styles.playButton]}
         onPress={() => navigation.navigate('Quizzes')}
         activeOpacity={0.5}>
@@ -75,31 +88,10 @@ const Home = ({navigation}: {navigation: any}) => {
         </Txt>
       </TouchableOpacity>
 
-      <Modal
-        testID="settings-modal"
-        isVisible={true}
-        onBackButtonPress={() => setSettingsState(false)}
-        onBackdropPress={() => setSettingsState(false)}>
-        <View style={styles.settingsSegmentsBox}>
-          <View style={styles.settingsSegment}>
-            <View style={styles.settingsButton}>
-              <MusicIcon style={styles.settingsButtonIcon} />
-            </View>
-            <Txt type="Bold" style={styles.settingsButtonTitle}>
-              Music
-            </Txt>
-          </View>
-          <Space distance={40} />
-          <TouchableOpacity style={styles.settingsSegment}>
-            <View style={styles.settingsButton}>
-              <AppsIcon style={styles.settingsButtonIcon} />
-            </View>
-            <Txt type="Bold" style={styles.settingsButtonTitle}>
-              More
-            </Txt>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+      <SettingsSection
+        settingsState={settingsState}
+        closeSettings={closeSettings}
+      />
     </View>
   );
 };
@@ -160,36 +152,16 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     fontSize: 18,
-    letterSpacing: 2,
+    letterSpacing: 0.6,
     color: '#e3e8ed',
   },
   playButton: {
     marginHorizontal: 12,
     marginBottom: 12,
   },
-  settingsSegmentsBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 36,
-    marginBottom: 22,
-  },
-  settingsSegment: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  settingsButton: {
-    padding: 18,
-    borderRadius: 80,
-    backgroundColor: '#7c8c96',
-  },
-  settingsButtonIcon: {
-    width: 34,
-    height: 34,
-    fill: 'white',
-  },
-  settingsButtonTitle: {
-    marginTop: 6,
-    fontSize: 18,
+  playButtonTitle: {
+    color: '#4fbeff',
+    fontSize: 20,
+    letterSpacing: 0.4,
   },
 });

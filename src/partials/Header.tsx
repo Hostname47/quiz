@@ -10,7 +10,7 @@ const Header = () => {
   const {navigate} = useNavigation<StackNavigation>();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="header">
       <View style={styles.logoBox}>
         <View style={styles.logoTextContainer}>
           {/* <Logo style={styles.logo} fill="white" />

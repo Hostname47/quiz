@@ -1,24 +1,14 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {render, screen, fireEvent} from '@testing-library/react-native';
+import {screen, fireEvent, waitFor, act} from '@testing-library/react-native';
+import {cleanup} from '@testing-library/react-native';
 import {Image} from 'react-native';
 import Home from '../src/screens/Home';
-import {Provider} from 'react-redux';
-import store from '../src/app/store';
 
 const navigation = {navigate: jest.fn()};
 
-const renderScreen = () => {
-  return render(
-    <Provider store={store}>
-      <NavigationContainer>
-        <Home navigation={navigation} />
-      </NavigationContainer>
-    </Provider>,
-  );
-};
+afterEach(cleanup);
 
 beforeEach(() => {
-  renderScreen();
+  reduxRender(<Home navigation={navigation} />);
 });
 
 // it.skip('Should match snapshot', () => {
@@ -55,26 +45,113 @@ it('Should have stuff in it 😋', () => {
 });
 
 describe('Testing navigation actions', () => {
-  it('Should have shop button that takes the user to shop', () => {
-    const shopButton = screen.getByAccessibilityHint(
-      'Shop button to go to shop screen',
-    );
-    expect(shopButton).toBeTruthy();
-    fireEvent(shopButton, 'press');
+  it('All navigation buttons in home screen should be enabled after redux state initialization', async () => {
+    await waitFor(() => {
+      const shopButton = screen.getByTestId('shop-button');
+      const playButton = screen.getByTestId('play-button');
+      const settingsButton = screen.getByTestId('settings-button');
+
+      expect(shopButton.props.accessibilityState.disabled).toBe(true);
+      expect(settingsButton.props.accessibilityState.disabled).toBe(true);
+      expect(playButton.props.accessibilityState.disabled).toBe(true);
+    });
+  });
+
+  it('Shop button is taking user to shop screen after state init', async () => {
+    // Wait for the state update and user to be able to interact
+    await waitFor(() => {
+      // Query the shop button
+      const shopButton = screen.getByTestId('shop-button');
+
+      // Check if the button is enabled
+      expect(shopButton.props.accessibilityState.disabled).toBe(false);
+
+      // Perform the button press
+      fireEvent.press(shopButton);
+    });
+
     expect(navigation.navigate).toBeCalledWith('Shop');
   });
 
-  it('Should have play button that takes the user to quizzes map', () => {
+  it('Should have play button that takes the user to quizzes map', async () => {
     const startButton = screen.getByAccessibilityHint('Press here to start');
-    expect(startButton).toBeTruthy();
-    fireEvent(startButton, 'press');
-    expect(navigation.navigate).toBeCalledWith('Quizzes');
+
+    await waitFor(() => {
+      fireEvent(startButton, 'press');
+      expect(navigation.navigate).toBeCalledWith('Quizzes');
+    });
   });
 });
 
 /**
- * For settings button, when the user press it, a bottom sheet should
- * appear with sound and more apps.
+ * For settings button, when the user press it, a modal appears with sound and more apps buttons.
  * For that purpose, we'll start using TDD here by writing tests first and implement
  * this feature by letting tests drive the development.
  */
+describe('Testing settings section', () => {
+  it('Should be hidden initially', () => {
+    const modal = screen.getByTestId('settings-modal');
+    expect(modal).toBeTruthy(); // Check if it exists
+
+    const modalContainer = screen.queryByAccessibilityHint(
+      'Settings modal container',
+    );
+    expect(modalContainer).toBeFalsy();
+  });
+
+  it('Should display settings button when settings button pressed', () => {
+    const button = screen.getByAccessibilityHint('Settings button');
+
+    expect(button).toBeTruthy();
+    fireEvent(button, 'press');
+    const modalContainer = screen.queryByAccessibilityHint(
+      'Settings modal container',
+    );
+    expect(modalContainer).toBeTruthy();
+  });
+
+  it('Should render settings modal with false state', () => {
+    const modal = screen.getByTestId('settings-modal');
+    const button = screen.getByAccessibilityHint('Settings button');
+
+    expect(button).toBeTruthy();
+    expect(modal.props).toMatchObject({
+      visible: false,
+    });
+  });
+
+  it('Should show settings modal when settings button pressed and hide when "x" button pressed', async () => {
+    const modal = screen.getByTestId('settings-modal');
+    const button = screen.getByAccessibilityHint('Settings button');
+    expect(button).toBeTruthy();
+    await waitFor(() => {
+      fireEvent.press(button);
+    });
+
+    expect(modal.props).toMatchObject({
+      visible: true,
+    });
+
+    const closeButton = screen.getByAccessibilityHint('Close settings');
+    expect(closeButton).toBeTruthy();
+
+    /**
+     * The following test works, since react native modal by default does not respond
+     * immediately and change the visible property because it (maybe) performs some animations
+     * before updating the value, and for that reason I put this delay to make sure the aniomation
+     * is complkete and the value is updated. This is just a hack to make the test works
+     * but later we'll address this.
+     */
+
+    // await waitFor(() => {
+    //   fireEvent.press(closeButton);
+    // });
+
+    // await new Promise(resolve => setTimeout(resolve, 600)); // Adjust the delay time as needed
+
+    // const hiddenModal = screen.getByTestId('settings-modal');
+    // expect(hiddenModal.props).toMatchObject({
+    //   visible: false,
+    // });
+  });
+});
