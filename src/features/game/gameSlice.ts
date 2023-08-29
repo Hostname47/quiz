@@ -1,6 +1,12 @@
 import {PayloadAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {gameDefaults} from '../../utils/constants';
+import {
+  HELPS_NUMBER_TO_BUY,
+  HELPS_PRICE,
+  LIVES_NUMBER_TO_BUY,
+  LIVES_PRICE,
+} from '../../utils/constants';
 
 type Game = {
   lives: number;
@@ -54,7 +60,16 @@ export const initializeGame = createAsyncThunk(
 const gameSlice = createSlice({
   name: 'game',
   initialState,
-  reducers: {},
+  reducers: {
+    buyLives: state => {
+      state.lives += LIVES_NUMBER_TO_BUY;
+      state.money -= LIVES_PRICE;
+    },
+    buyHelps: state => {
+      state.helps += HELPS_NUMBER_TO_BUY;
+      state.money -= HELPS_PRICE;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(
       initializeGame.fulfilled,
@@ -73,4 +88,4 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {} = gameSlice.actions;
+export const {buyLives, buyHelps} = gameSlice.actions;

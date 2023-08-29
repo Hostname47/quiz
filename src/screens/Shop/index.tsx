@@ -1,5 +1,5 @@
 import {StyleSheet, TouchableOpacity, Text, View} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import GameHeader from '../../partials/GameHeader';
 import ScreenTitle from '../../components/ScreenTitle';
 import ShopIcon from '../../components/icons/ShopIcon';
@@ -10,8 +10,67 @@ import Space from '../../components/common/Space';
 import PlayIcon from '../../components/icons/PlayIcon';
 import HeartIcon from '../../components/icons/HeartIcon';
 import HelpIcon from '../../components/icons/HelpIcon';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {buyLives, buyHelps} from '../../features/game/gameSlice';
+import {
+  HELPS_NUMBER_TO_BUY,
+  HELPS_PRICE,
+  LIVES_NUMBER_TO_BUY,
+  LIVES_PRICE,
+} from '../../utils/constants';
 
-const Shop = ({navigation}) => {
+const Shop = ({navigation}: {navigation: any}) => {
+  const game = useAppSelector(state => state.game);
+  const dispatch = useAppDispatch();
+  const lock = useRef(true);
+
+  const buyHearts = async () => {
+    if (!game.initialized || !lock.current) {
+      return;
+    }
+    lock.current = false;
+
+    try {
+      if (game.money >= LIVES_PRICE) {
+        const userGame = await AsyncStorage.getItem('game');
+        const userGameObject = JSON.parse(userGame);
+        userGameObject.lives = userGameObject.lives + LIVES_NUMBER_TO_BUY;
+        userGameObject.money = userGameObject.money - LIVES_PRICE;
+        await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
+
+        dispatch(buyLives());
+      }
+    } catch (error) {
+      // Show an error as toast notification
+    } finally {
+      lock.current = true;
+    }
+  };
+
+  const buyHelpings = async () => {
+    if (!game.initialized || !lock.current) {
+      return;
+    }
+    lock.current = false;
+
+    try {
+      if (game.money >= LIVES_PRICE) {
+        const userGame = await AsyncStorage.getItem('game');
+        const userGameObject = JSON.parse(userGame);
+        userGameObject.helps += HELPS_NUMBER_TO_BUY;
+        userGameObject.money -= HELPS_PRICE;
+        await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
+
+        dispatch(buyHelps());
+      }
+    } catch (error) {
+      // Show an error as toast notification
+    } finally {
+      lock.current = true;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <GameHeader />
@@ -53,7 +112,7 @@ const Shop = ({navigation}) => {
             <HeartIcon style={styles.leftIcon} fill="#ff5656" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={buyHearts}>
               <Text style={styles.price}>60</Text>
               <Space distance={6} />
               <DollarIcon style={styles.currency} fill="#6cdd6e" />
@@ -67,7 +126,7 @@ const Shop = ({navigation}) => {
             <HelpIcon style={styles.leftIcon} fill="#ede43b" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={buyHelpings}>
               <Text style={styles.price}>40</Text>
               <Space distance={6} />
               <DollarIcon style={styles.currency} fill="#6cdd6e" />
