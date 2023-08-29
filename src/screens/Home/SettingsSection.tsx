@@ -7,7 +7,8 @@ import XIcon from '../../components/icons/XIcon';
 import Space from '../../components/common/Space';
 import AppsIcon from '../../components/icons/AppsIcon';
 import {DEV_APP_STORE_URL} from '@env';
-import {useAppSelector} from '../../app/hooks';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import {switchBackgroundMusic} from '../../features/app/appSlice';
 
 type SettingsSectionProps = {
   settingsState: boolean;
@@ -27,6 +28,11 @@ const SettingsSection = ({
     }
   };
   const app = useAppSelector(state => state.app);
+  const dispatch = useAppDispatch();
+
+  const switchSound = () => {
+    dispatch(switchBackgroundMusic());
+  };
 
   return (
     <Modal
@@ -44,7 +50,10 @@ const SettingsSection = ({
         style={styles.settingsSegmentsBox}
         accessibilityHint="Settings modal container">
         <View style={styles.settingsSegment}>
-          <TouchableOpacity style={styles.settingsButton}>
+          <TouchableOpacity
+            style={styles.settingsButton}
+            disabled={!app.bootstrapped}
+            onPress={switchSound}>
             <MusicIcon style={styles.settingsButtonIcon} />
             {!app.music && <View style={styles.noMusicLine} />}
           </TouchableOpacity>
