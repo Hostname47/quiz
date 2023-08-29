@@ -1,5 +1,5 @@
 export const DEFAULT_USER_PSEUDO: string = 'pseudo7';
-export const DEFAULT_USER_AVATAR: number = 0;
+export const DEFAULT_USER_AVATAR: number = 1;
 
 export const gameDefaults = {
   money: 800,
