@@ -5,13 +5,22 @@ import {useAppSelector} from '../../app/hooks';
 import PlusIcon from '../../components/icons/PlusIcon';
 import HeartIcon from '../../components/icons/HeartIcon';
 import HelpIcon from '../../components/icons/HelpIcon';
+import {useNavigation} from '@react-navigation/native';
 
 const GameSection = () => {
+  const {navigate} = useNavigation();
   const game = useAppSelector(state => state.game);
+
+  const goToShop = () => {
+    navigate('Shop');
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.segment} activeOpacity={0.5}>
+      <TouchableOpacity
+        style={styles.segment}
+        activeOpacity={0.5}
+        onPress={goToShop}>
         <DollarIcon style={styles.segmentIcon} fill="#6cdd6e" />
         <Text style={styles.segmentValue}>
           {game.initialized ? game.money : '-'}
@@ -28,7 +37,10 @@ const GameSection = () => {
         </Text>
         <Text style={styles.helpsLabel}>help</Text>
       </View>
-      <TouchableOpacity style={styles.segment} activeOpacity={0.5}>
+      <TouchableOpacity
+        style={styles.segment}
+        activeOpacity={0.5}
+        onPress={goToShop}>
         <HeartIcon style={styles.segmentIcon} fill="#ff5656" />
         <Text style={styles.segmentValue}>
           {game.initialized ? game.lives : '-'}
