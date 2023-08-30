@@ -5,6 +5,7 @@ import {
   TestIds,
 } from 'react-native-google-mobile-ads';
 import {ADMOB_INTERSTITIAL_UNIT_ID} from '@env';
+import {keywords} from './constants';
 
 const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : ADMOB_INTERSTITIAL_UNIT_ID;
 
@@ -16,7 +17,7 @@ const Interstitial = ({counter = 0}: {counter: number}) => {
   useEffect(() => {
     const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
       requestNonPersonalizedAdsOnly: true,
-      keywords: ['soccer', 'football', 'sports'],
+      keywords: keywords,
     });
     interstitial.load();
 

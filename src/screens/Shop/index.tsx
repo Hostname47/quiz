@@ -1,5 +1,5 @@
 import {StyleSheet, TouchableOpacity, Text, View} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useRef, useState, useCallback} from 'react';
 import GameHeader from '../../partials/GameHeader';
 import ScreenTitle from '../../components/ScreenTitle';
 import ShopIcon from '../../components/icons/ShopIcon';
@@ -11,15 +11,18 @@ import HeartIcon from '../../components/icons/HeartIcon';
 import HelpIcon from '../../components/icons/HelpIcon';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {buyLives, buyHelps} from '../../features/game/gameSlice';
+import {buyLives, buyHelps, addMoney} from '../../features/game/gameSlice';
 import {
   HELPS_NUMBER_TO_BUY,
   HELPS_PRICE,
   LIVES_NUMBER_TO_BUY,
   LIVES_PRICE,
+  gameDefaults,
 } from '../../utils/constants';
+import Rewarded from '../../ads/Rewarded';
 
 const Shop = ({navigation}: {navigation: any}) => {
+  const [rewardAdCounter, setRewardAdCounter] = useState(0);
   const game = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
   const lock = useRef(true);
@@ -70,6 +73,23 @@ const Shop = ({navigation}: {navigation: any}) => {
     }
   };
 
+  const rewardUser = useCallback(async (amount: number) => {
+    try {
+      const userGame = await AsyncStorage.getItem('game');
+      const userGameObject = JSON.parse(userGame);
+      userGameObject.money = userGameObject.money + amount;
+      await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
+
+      dispatch(addMoney(amount));
+    } catch (error) {
+      // Show an error as toast notification
+    }
+  }, []);
+
+  const showRewardedAd = () => {
+    setRewardAdCounter(v => v + 1);
+  };
+
   return (
     <View style={styles.container}>
       <GameHeader />
@@ -95,7 +115,7 @@ const Shop = ({navigation}: {navigation: any}) => {
             <Text style={styles.number}>+10</Text>
             <DollarIcon style={styles.leftIcon} fill="#6cdd6e" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={showRewardedAd}>
               <PlayIcon style={styles.adWatchIcon} fill="#4fbeff" />
               <Space distance={6} />
               <Text style={styles.buttonTitle}>FREE</Text>
@@ -127,6 +147,8 @@ const Shop = ({navigation}: {navigation: any}) => {
           </View>
         </View>
       </View>
+
+      <Rewarded counter={rewardAdCounter} rewardUser={rewardUser} />
     </View>
   );
 };
