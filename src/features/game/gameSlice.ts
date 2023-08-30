@@ -69,6 +69,9 @@ const gameSlice = createSlice({
       state.helps += HELPS_NUMBER_TO_BUY;
       state.money -= HELPS_PRICE;
     },
+    addMoney: (state, action: PayloadAction<number>) => {
+      state.money += action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -88,4 +91,4 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {buyLives, buyHelps} = gameSlice.actions;
+export const {buyLives, buyHelps, addMoney} = gameSlice.actions;
