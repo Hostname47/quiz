@@ -3,7 +3,6 @@ import React, {useRef} from 'react';
 import GameHeader from '../../partials/GameHeader';
 import ScreenTitle from '../../components/ScreenTitle';
 import ShopIcon from '../../components/icons/ShopIcon';
-import Txt from '../../components/common/Txt';
 import DollarIcon from '../../components/icons/DollarIcon';
 import RightArrow from '../../components/icons/RightArrow';
 import Space from '../../components/common/Space';
@@ -93,9 +92,7 @@ const Shop = ({navigation}: {navigation: any}) => {
         </View>
         <View style={styles.body}>
           <View style={styles.segment}>
-            <Txt type="Bold" style={styles.value}>
-              +10
-            </Txt>
+            <Text style={styles.number}>+10</Text>
             <DollarIcon style={styles.leftIcon} fill="#6cdd6e" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
             <TouchableOpacity style={styles.button}>
@@ -106,28 +103,24 @@ const Shop = ({navigation}: {navigation: any}) => {
           </View>
           <Text style={styles.textSeparator}>- - - - -</Text>
           <View style={styles.segment}>
-            <Txt type="Bold" style={styles.value}>
-              +3
-            </Txt>
+            <Text style={styles.number}>+3</Text>
             <HeartIcon style={styles.leftIcon} fill="#ff5656" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
 
             <TouchableOpacity style={styles.button} onPress={buyHearts}>
-              <Text style={styles.price}>60</Text>
+              <Text style={styles.number}>60</Text>
               <Space distance={6} />
               <DollarIcon style={styles.currency} fill="#6cdd6e" />
             </TouchableOpacity>
           </View>
           <Space vertical distance={12} />
           <View style={styles.segment}>
-            <Txt type="Bold" style={styles.value}>
-              +3
-            </Txt>
+            <Text style={styles.number}>+3</Text>
             <HelpIcon style={styles.leftIcon} fill="#ede43b" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
 
             <TouchableOpacity style={styles.button} onPress={buyHelpings}>
-              <Text style={styles.price}>40</Text>
+              <Text style={styles.number}>40</Text>
               <Space distance={6} />
               <DollarIcon style={styles.currency} fill="#6cdd6e" />
             </TouchableOpacity>
@@ -158,17 +151,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   value: {
-    fontSize: 30,
+    fontSize: 26,
     letterSpacing: 1,
   },
   leftIcon: {
-    width: 30,
-    height: 30,
+    width: 26,
+    height: 26,
     marginLeft: 10,
   },
   arrow: {
-    width: 26,
-    height: 26,
+    width: 22,
+    height: 22,
     marginHorizontal: 12,
   },
   button: {
@@ -181,6 +174,7 @@ const styles = StyleSheet.create({
     borderColor: '#3b3e47',
     borderRadius: 6,
     width: 120,
+    height: 60,
   },
   adWatchIcon: {
     width: 16,
@@ -198,14 +192,14 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     color: '#a4b3bc',
   },
-  price: {
-    fontSize: 22,
+  number: {
+    fontSize: 20,
     fontWeight: '800',
     letterSpacing: 1,
   },
   currency: {
-    width: 28,
-    height: 28,
+    width: 26,
+    height: 26,
   },
   inlineCurrency: {
     width: 18,
