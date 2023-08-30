@@ -79,7 +79,7 @@ const Home = ({navigation}: {navigation: any}) => {
         disabled={!game.initialized}
         testID="play-button"
         style={[styles.button, styles.playButton]}
-        onPress={() => navigation.navigate('Quizzes')}
+        onPress={() => navigation.navigate('QuizzesMap')}
         activeOpacity={0.5}>
         <PlayIcon fill="#4fbeff" style={styles.buttonIcon} />
         <Space distance={12} />

@@ -2,7 +2,7 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import GameHeader from '../../partials/GameHeader';
 
-const Quizzes = () => {
+const QuizzesMap = () => {
   return (
     <View>
       <GameHeader />
@@ -10,6 +10,6 @@ const Quizzes = () => {
   );
 };
 
-export default Quizzes;
+export default QuizzesMap;
 
 const styles = StyleSheet.create({});
