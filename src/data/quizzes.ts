@@ -54,7 +54,7 @@ export const quizzes: QuizItem[] = [
     level: 3,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -66,7 +66,7 @@ export const quizzes: QuizItem[] = [
   {
     level: 4,
     type: 'image-with-segments',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: ['segment 1', 1998],
     segments: [
       {
@@ -75,7 +75,7 @@ export const quizzes: QuizItem[] = [
       },
       {
         type: 'image',
-        value: require('./quizzes-images/roberto.PNG'),
+        value: require('./quizzes-images/roberto.png'),
       },
     ],
     answer: 'Roberto Baggio',
@@ -84,7 +84,7 @@ export const quizzes: QuizItem[] = [
     level: 5,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -97,7 +97,7 @@ export const quizzes: QuizItem[] = [
     level: 6,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -110,7 +110,7 @@ export const quizzes: QuizItem[] = [
     level: 7,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -123,7 +123,7 @@ export const quizzes: QuizItem[] = [
     level: 8,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -136,7 +136,7 @@ export const quizzes: QuizItem[] = [
     level: 9,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -149,7 +149,7 @@ export const quizzes: QuizItem[] = [
     level: 10,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.PNG'),
+    image: require('./quizzes-images/roberto.png'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',

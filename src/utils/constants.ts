@@ -5,7 +5,7 @@ export const gameDefaults = {
   money: 800,
   helps: 3,
   lives: 3,
-  level: 0,
+  level: 1,
 };
 
 export const INITIAL_SCREEN: string = 'Home';
