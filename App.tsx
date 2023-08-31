@@ -7,7 +7,7 @@ import store from './src/app/store';
 import mobileAds from 'react-native-google-mobile-ads';
 
 import Home from './src/screens/Home';
-import Quizzes from './src/screens/Quizzes';
+import QuizzesMap from './src/screens/QuizzesMap';
 import QuizPlayer from './src/screens/QuizPlayer';
 import More from './src/screens/More';
 import Header from './src/partials/Header';
@@ -34,7 +34,7 @@ function App(): JSX.Element {
           <Header />
           <Navigator screenOptions={{headerShown: false}}>
             <Screen name="Home" component={Home} />
-            <Screen name="Quizzes" component={Quizzes} />
+            <Screen name="QuizzesMap" component={QuizzesMap} />
             <Screen name="QuizPlayer" component={QuizPlayer} />
             <Screen name="Shop" component={Shop} />
             <Screen name="More" component={More} />
