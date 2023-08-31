@@ -1,5 +1,5 @@
 import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import Modal from '../../components/Modal';
 import PenIcon from '../../components/icons/PenIcon';
@@ -25,6 +25,7 @@ const avatars = [
 const loadingAvatar = require('../../assets/avatars/6.png');
 
 const UserSection = () => {
+  const lock = useRef(true);
   const user = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
   const [avatarPickerState, setAvatarPickerState] = useState(false);
@@ -49,42 +50,66 @@ const UserSection = () => {
   };
 
   const changeAvatar = async (index: number) => {
-    const data = await AsyncStorage.getItem('user');
-    const userData = JSON.parse(data);
-    userData.avatar = index;
-    await AsyncStorage.setItem('user', JSON.stringify(userData));
+    if (!lock.current) {
+      return;
+    }
+    lock.current = false;
 
-    dispatch(updateAvatar(index));
-    setAvatarPickerState(false);
+    try {
+      const data = await AsyncStorage.getItem('user');
+      if (data) {
+        const userData = JSON.parse(data);
+        userData.avatar = index;
+        await AsyncStorage.setItem('user', JSON.stringify(userData));
+
+        dispatch(updateAvatar(index));
+      }
+    } catch (error) {
+      // Handle error
+    } finally {
+      lock.current = true;
+      setAvatarPickerState(false);
+    }
   };
 
   const changePseudo = async () => {
+    if (!lock.current) {
+      return;
+    }
+    lock.current = false;
+
     const pseudo = pseudoValue.trim();
 
-    if (pseudo === '') {
-      setPseudoError('Pseudo field is required');
-      return;
+    try {
+      if (pseudo === '') {
+        setPseudoError('Pseudo field is required');
+        return;
+      }
+      if (/\s/.test(pseudo)) {
+        setPseudoError('Pseudo should not contain spaces');
+        return;
+      }
+      if (pseudo[0] === '#') {
+        setPseudoError('Pseudo should no begin with #');
+        return;
+      }
+
+      setPseudoError('');
+
+      const data = await AsyncStorage.getItem('user');
+      if (data) {
+        const userData = JSON.parse(data);
+        userData.pseudo = pseudo;
+        await AsyncStorage.setItem('user', JSON.stringify(userData));
+
+        dispatch(updatePseudo(pseudo));
+      }
+    } catch (error) {
+      // Handle error
+    } finally {
+      lock.current = true;
+      setPseudoEdit(false);
     }
-
-    if (/\s/.test(pseudo)) {
-      setPseudoError('Pseudo should not contain spaces');
-      return;
-    }
-
-    if (pseudo[0] === '#') {
-      setPseudoError('Pseudo should no begin with #');
-      return;
-    }
-
-    setPseudoError('');
-
-    const data = await AsyncStorage.getItem('user');
-    const userData = JSON.parse(data);
-    userData.pseudo = pseudo;
-    await AsyncStorage.setItem('user', JSON.stringify(userData));
-
-    dispatch(updatePseudo(pseudo));
-    setPseudoEdit(false);
   };
 
   return (

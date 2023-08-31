@@ -1,4 +1,10 @@
-import {StyleSheet, TextInput, StyleProp, TextStyle} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  TextInputProps,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 type TextualInputProps = {
@@ -7,7 +13,7 @@ type TextualInputProps = {
   styles?: StyleProp<TextStyle>;
   value: string;
   onChangeText: (value: string) => void;
-};
+} & TextInputProps;
 
 const TextualInput = React.forwardRef(
   (
