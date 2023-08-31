@@ -22,4 +22,7 @@ export const globalStyles = StyleSheet.create({
     height: 20,
     fill: '#4fbeff',
   },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
 });
