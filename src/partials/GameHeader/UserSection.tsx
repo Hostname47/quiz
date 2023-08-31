@@ -1,6 +1,6 @@
 import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
-import React, {useState, useRef} from 'react';
-import {useAppSelector} from '../../app/hooks';
+import React, {useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import Modal from '../../components/Modal';
 import PenIcon from '../../components/icons/PenIcon';
 import Animated, {FadeInDown, FadeOutUp} from 'react-native-reanimated';
@@ -11,6 +11,8 @@ import TextButton from '../../components/buttons/TextButton';
 import Space from '../../components/common/Space';
 import TextualInput from '../../components/controls/TextualInput';
 import ErrorMessage from '../../components/message/ErrorMessage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {updateAvatar, updatePseudo} from '../../features/user/userSlice';
 
 const avatars = [
   require('../../assets/avatars/0.png'),
@@ -23,24 +25,65 @@ const avatars = [
 const loadingAvatar = require('../../assets/avatars/6.png');
 
 const UserSection = () => {
-  const pseudoRef = useRef(null);
   const user = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
   const [avatarPickerState, setAvatarPickerState] = useState(false);
   const [pseudoError, setPseudoError] = useState('');
   const [pseudoEdit, setPseudoEdit] = useState(false);
-  const [modalState, setModalState] = useState(true);
+  const [modalState, setModalState] = useState(false);
   const [pseudoValue, setPseudoValue] = useState(user.pseudo);
+
+  const updatePseudoValue = (v: string) => {
+    setPseudoValue(v);
+  };
 
   const closeModal = () => {
     setModalState(false);
   };
-
   const closePseudoError = () => {
     setPseudoError('');
   };
-
   const cancelPseudoUpdate = () => {
     setPseudoValue(user.pseudo);
+    setPseudoEdit(false);
+  };
+
+  const changeAvatar = async (index: number) => {
+    const data = await AsyncStorage.getItem('user');
+    const userData = JSON.parse(data);
+    userData.avatar = index;
+    await AsyncStorage.setItem('user', JSON.stringify(userData));
+
+    dispatch(updateAvatar(index));
+    setAvatarPickerState(false);
+  };
+
+  const changePseudo = async () => {
+    const pseudo = pseudoValue.trim();
+
+    if (pseudo === '') {
+      setPseudoError('Pseudo field is required');
+      return;
+    }
+
+    if (/\s/.test(pseudo)) {
+      setPseudoError('Pseudo should not contain spaces');
+      return;
+    }
+
+    if (pseudo[0] === '#') {
+      setPseudoError('Pseudo should no begin with #');
+      return;
+    }
+
+    setPseudoError('');
+
+    const data = await AsyncStorage.getItem('user');
+    const userData = JSON.parse(data);
+    userData.pseudo = pseudo;
+    await AsyncStorage.setItem('user', JSON.stringify(userData));
+
+    dispatch(updatePseudo(pseudo));
     setPseudoEdit(false);
   };
 
@@ -96,7 +139,8 @@ const UserSection = () => {
                     <TouchableOpacity
                       key={index}
                       disabled={index === user.avatar}
-                      activeOpacity={0.5}>
+                      activeOpacity={0.5}
+                      onPress={() => changeAvatar(index)}>
                       <Image source={avatar} style={styles.sAvatarChoice} />
                       {index === user.avatar && (
                         <View style={styles.userAvatar}>
@@ -126,9 +170,9 @@ const UserSection = () => {
                 <TextualInput
                   placeholder="Your pseudo here.."
                   value={pseudoValue}
-                  onChangeText={() => {}}
+                  onChangeText={v => updatePseudoValue(v)}
                   styles={styles.pseudoInput}
-                  ref={pseudoRef}
+                  maxLength={16}
                 />
                 <TextButton title="X" onPress={cancelPseudoUpdate} />
               </View>
@@ -140,7 +184,7 @@ const UserSection = () => {
           )}
           <Space vertical distance={16} />
           {pseudoEdit ? (
-            <TextButton title="Update Pseudo" onPress={() => {}} />
+            <TextButton title="Update Pseudo" onPress={changePseudo} primary />
           ) : (
             <TextButton
               title="Edit Pseudo"
@@ -161,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#40444f',
     paddingVertical: 4,
-    paddingHorizontal: 12,
+    paddingHorizontal: 6,
     width: 80,
   },
   avatar: {
@@ -173,9 +217,11 @@ const styles = StyleSheet.create({
   },
   pseudo: {
     fontSize: 11,
+    fontWeight: '600',
   },
   settingsContainer: {
     marginTop: 8,
+    paddingHorizontal: 14,
     paddingVertical: 16,
     alignItems: 'center',
   },
@@ -254,6 +300,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 1,
     fontSize: 16,
+    color: '#adadad',
   },
   pseudoInput: {
     height: 50,

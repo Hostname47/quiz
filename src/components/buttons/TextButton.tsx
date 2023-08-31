@@ -12,6 +12,7 @@ type TextButtonProps = {
   padding?: number;
   styles?: StyleProp<ViewStyle>;
   onPress: () => void;
+  primary?: boolean;
 };
 
 const TextButton = ({
@@ -19,10 +20,16 @@ const TextButton = ({
   padding = 16,
   styles = {},
   onPress,
+  primary = false,
 }: TextButtonProps) => {
   return (
     <TouchableOpacity
-      style={[localstyles.button, {padding}, styles]}
+      style={[
+        localstyles.button,
+        {padding},
+        styles,
+        primary ? localstyles.primary : null,
+      ]}
       onPress={onPress}
       activeOpacity={0.6}>
       <Text style={localstyles.title}>{title}</Text>
@@ -42,6 +49,9 @@ const localstyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     letterSpacing: 1,
+  },
+  primary: {
+    backgroundColor: '#419de2',
   },
 });
 
