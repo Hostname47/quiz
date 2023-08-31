@@ -1,8 +1,14 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import React from 'react';
 import Txt from '../../../components/common/Txt';
 import LockIcon from '../../../components/icons/LockIcon';
 import {useNavigation} from '@react-navigation/native';
+import Animated, {FadeInRight} from 'react-native-reanimated';
 
 type LevelButtonProps = {
   level: number;
@@ -11,6 +17,7 @@ type LevelButtonProps = {
 
 const LevelButton = ({level, currentUserLevel}: LevelButtonProps) => {
   const {navigate} = useNavigation();
+  const {width} = useWindowDimensions();
   const playable = currentUserLevel >= level;
 
   const play = () => {
@@ -23,7 +30,10 @@ const LevelButton = ({level, currentUserLevel}: LevelButtonProps) => {
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[
+        styles.container,
+        {marginLeft: Math.random() * (width - 80 - 120)},
+      ]}
       disabled={!playable}
       activeOpacity={0.5}
       onPress={play}>
@@ -46,7 +56,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 50,
     backgroundColor: '#1a1b1e',
-    marginVertical: 16,
+    marginVertical: 12,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
