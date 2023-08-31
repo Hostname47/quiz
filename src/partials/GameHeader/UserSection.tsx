@@ -1,5 +1,5 @@
 import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {useAppSelector} from '../../app/hooks';
 import Modal from '../../components/Modal';
 import PenIcon from '../../components/icons/PenIcon';
@@ -7,6 +7,10 @@ import Animated, {FadeInDown, FadeOutUp} from 'react-native-reanimated';
 import TickIcon from '../../components/icons/TickIcon';
 import {globalStyles} from '../../styles/globals';
 import XIcon from '../../components/icons/XIcon';
+import TextButton from '../../components/buttons/TextButton';
+import Space from '../../components/common/Space';
+import TextualInput from '../../components/controls/TextualInput';
+import ErrorMessage from '../../components/message/ErrorMessage';
 
 const avatars = [
   require('../../assets/avatars/0.png'),
@@ -19,12 +23,25 @@ const avatars = [
 const loadingAvatar = require('../../assets/avatars/6.png');
 
 const UserSection = () => {
-  const [avatarPickerState, setAvatarPickerState] = useState(false);
-  const [modalState, setModalState] = useState(true);
+  const pseudoRef = useRef(null);
   const user = useAppSelector(state => state.user);
+  const [avatarPickerState, setAvatarPickerState] = useState(false);
+  const [pseudoError, setPseudoError] = useState('');
+  const [pseudoEdit, setPseudoEdit] = useState(false);
+  const [modalState, setModalState] = useState(true);
+  const [pseudoValue, setPseudoValue] = useState(user.pseudo);
 
   const closeModal = () => {
     setModalState(false);
+  };
+
+  const closePseudoError = () => {
+    setPseudoError('');
+  };
+
+  const cancelPseudoUpdate = () => {
+    setPseudoValue(user.pseudo);
+    setPseudoEdit(false);
   };
 
   return (
@@ -49,45 +66,86 @@ const UserSection = () => {
         onBackButtonPress={closeModal}
         onBackdropPress={closeModal}>
         <View style={styles.settingsContainer}>
-          <View>
-            <Image source={avatars[user.avatar]} style={styles.sAvatar} />
-            <TouchableOpacity
-              onPress={() => setAvatarPickerState(true)}
-              style={[styles.settingsButton, styles.avatarEditButton]}
-              activeOpacity={0.5}>
-              <PenIcon style={styles.settingsButtonIcon} />
-            </TouchableOpacity>
+          {/* Avatar section */}
+          <View style={styles.settingsSection}>
+            <View>
+              <Image source={avatars[user.avatar]} style={styles.sAvatar} />
+              <TouchableOpacity
+                onPress={() => setAvatarPickerState(true)}
+                style={[styles.settingsButton, styles.avatarEditButton]}
+                activeOpacity={0.5}>
+                <PenIcon style={styles.settingsButtonIcon} />
+              </TouchableOpacity>
+            </View>
+            {avatarPickerState && (
+              <Animated.View
+                style={styles.sAvatarsContainer}
+                entering={FadeInDown}
+                exiting={FadeOutUp}>
+                <View
+                  style={[globalStyles.rowCenter, globalStyles.spaceBetween]}>
+                  <Text style={styles.sAvatarsLabel}>Change your avatar :</Text>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setAvatarPickerState(false)}>
+                    <XIcon style={styles.closeIcon} />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.sAvatars}>
+                  {avatars.map((avatar, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      disabled={index === user.avatar}
+                      activeOpacity={0.5}>
+                      <Image source={avatar} style={styles.sAvatarChoice} />
+                      {index === user.avatar && (
+                        <View style={styles.userAvatar}>
+                          <TickIcon style={styles.userAvatarTick} />
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </Animated.View>
+            )}
           </View>
-          {avatarPickerState && (
+          <Space vertical distance={12} />
+
+          {pseudoEdit ? (
             <Animated.View
-              style={styles.sAvatarsContainer}
+              style={globalStyles.center}
               entering={FadeInDown}
               exiting={FadeOutUp}>
-              <View style={[globalStyles.rowCenter, globalStyles.spaceBetween]}>
-                <Text style={styles.sAvatarsLabel}>Change your avatar :</Text>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setAvatarPickerState(false)}>
-                  <XIcon style={styles.closeIcon} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.sAvatars}>
-                {avatars.map((avatar, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    disabled={index === user.avatar}
-                    style={styles.sAvatarContainer}
-                    activeOpacity={0.5}>
-                    <Image source={avatar} style={styles.sAvatarChoice} />
-                    {index === user.avatar && (
-                      <View style={styles.userAvatar}>
-                        <TickIcon style={styles.userAvatarTick} />
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                ))}
+              {pseudoError && (
+                <ErrorMessage
+                  error={pseudoError}
+                  handleClose={closePseudoError}
+                />
+              )}
+              <View style={globalStyles.rowCenter}>
+                <TextualInput
+                  placeholder="Your pseudo here.."
+                  value={pseudoValue}
+                  onChangeText={() => {}}
+                  styles={styles.pseudoInput}
+                  ref={pseudoRef}
+                />
+                <TextButton title="X" onPress={cancelPseudoUpdate} />
               </View>
             </Animated.View>
+          ) : (
+            <Text style={styles.sPseudo}>
+              # <Text style={globalStyles.blue}>{user.pseudo}</Text>
+            </Text>
+          )}
+          <Space vertical distance={16} />
+          {pseudoEdit ? (
+            <TextButton title="Update Pseudo" onPress={() => {}} />
+          ) : (
+            <TextButton
+              title="Edit Pseudo"
+              onPress={() => setPseudoEdit(true)}
+            />
           )}
         </View>
       </Modal>
@@ -184,8 +242,23 @@ const styles = StyleSheet.create({
     height: 16,
     fill: 'white',
   },
+  settingsSection: {
+    width: '100%',
+    alignItems: 'center',
+  },
   sAvatarsLabel: {
     letterSpacing: 1,
     color: '#d5dae2',
+  },
+  sPseudo: {
+    fontWeight: '600',
+    letterSpacing: 1,
+    fontSize: 16,
+  },
+  pseudoInput: {
+    height: 50,
+    backgroundColor: '#1a1b1e',
+    width: 170,
+    marginRight: 8,
   },
 });
