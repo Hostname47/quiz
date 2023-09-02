@@ -9,6 +9,7 @@ import Question from './components/Question';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {setQuiz} from '../../features/game/gameSlice';
 import QuestionIcon from '../../components/icons/QuestionIcon';
+import GameHeader from '../../partials/GameHeader';
 
 const QuizPlayer = ({navigation, route}) => {
   const {quiz} = useAppSelector(state => state.game);
@@ -58,16 +59,19 @@ const QuizPlayer = ({navigation, route}) => {
 
   return initialized ? (
     <View style={{flex: 1}}>
+      <GameHeader />
       <ScreenTitle
-        title={'Quiz - level : ' + quiz.level}
+        title="Quiz player"
         Icon={PlayOutlineIcon}
         handleBack={navigation.goBack}
       />
       <View style={styles.container}>
         <Question quiz={quiz} />
-        <View style={{flex: 1}}>
+        <Space distance={6} vertical />
+        <View>
           <FlatList
             data={quiz.options}
+            ItemSeparatorComponent={() => <Space vertical distance={5} />}
             keyExtractor={o => o.toString()}
             renderItem={renderAnswer}
           />
@@ -86,18 +90,18 @@ export default QuizPlayer;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 8,
+    padding: 12,
+    paddingTop: 0,
   },
   answerButton: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-    marginVertical: 3,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     backgroundColor: '#111214',
     borderRadius: 3,
-    borderColor: '#444851',
+    borderColor: '#111214',
     borderWidth: 1,
   },
   answer: {
