@@ -7,6 +7,8 @@ import {
   LIVES_NUMBER_TO_BUY,
   LIVES_PRICE,
 } from '../../utils/constants';
+import {QuizItem} from '../../utils/types';
+import {quizzes} from '../../data/quizzes';
 
 type Game = {
   lives: number;
@@ -21,6 +23,7 @@ type InitialState = {
   helps: number;
   money: number;
   level: number;
+  quiz: QuizItem;
 };
 
 const initialState: InitialState = {
@@ -29,6 +32,7 @@ const initialState: InitialState = {
   helps: gameDefaults.helps,
   money: gameDefaults.money,
   level: gameDefaults.level,
+  quiz: quizzes[0],
 };
 
 export const initializeGame = createAsyncThunk(
@@ -72,6 +76,9 @@ const gameSlice = createSlice({
     addMoney: (state, action: PayloadAction<number>) => {
       state.money += action.payload;
     },
+    setQuiz: (state, action: PayloadAction<number>) => {
+      state.quiz = quizzes[action.payload - 1];
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -91,4 +98,4 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {buyLives, buyHelps, addMoney} = gameSlice.actions;
+export const {buyLives, buyHelps, addMoney, setQuiz} = gameSlice.actions;

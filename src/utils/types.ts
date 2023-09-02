@@ -23,11 +23,11 @@ type Quiz = {
   answer: string | number;
 };
 
-type TextQuiz = Quiz & {
+export type TextQuiz = Quiz & {
   question: string;
 };
 
-type ImageQuiz = TextQuiz & {
+export type ImageQuiz = TextQuiz & {
   image: ImageSourcePropType;
 };
 
@@ -44,7 +44,7 @@ type Segment =
       value: ImageSourcePropType;
     };
 
-type ImageWithSegments = Quiz & {
+export type ImageWithSegments = Quiz & {
   image: any;
   segments: Segment[]; // Here segments can be anything; It can be a string, number or even an image
 };

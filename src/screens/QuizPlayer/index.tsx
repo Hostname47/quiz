@@ -1,14 +1,19 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {quizzes} from '../../data/quizzes';
+import React, {useEffect, useState} from 'react';
 import ScreenTitle from '../../components/ScreenTitle';
 import PlayOutlineIcon from '../../components/icons/PlayOutlineIcon';
-import {QuizAnswer} from '../../utils/types';
+import {QuizAnswer, QuizItem} from '../../utils/types';
 import AnswerCheckbox from './components/AnswerCheckbox';
 import Space from '../../components/common/Space';
+import Question from './components/Question';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import {setQuiz} from '../../features/game/gameSlice';
+import QuestionIcon from '../../components/icons/QuestionIcon';
 
 const QuizPlayer = ({navigation, route}) => {
-  const quiz = quizzes[route.params.level - 1];
+  const {quiz} = useAppSelector(state => state.game);
+  const dispatch = useAppDispatch();
+  const [initialized, setInitialized] = useState(false);
   const [answer, setAnswer] = useState<string | number>('');
 
   const answerQuiz = async (option: string | number) => {
@@ -41,7 +46,17 @@ const QuizPlayer = ({navigation, route}) => {
     );
   };
 
-  return (
+  useEffect(() => {
+    dispatch(setQuiz(route.params.level));
+  }, []);
+
+  useEffect(() => {
+    if (quiz.level === route.params.level) {
+      setInitialized(true);
+    }
+  }, [quiz]);
+
+  return initialized ? (
     <View style={{flex: 1}}>
       <ScreenTitle
         title={'Quiz - level : ' + quiz.level}
@@ -49,7 +64,7 @@ const QuizPlayer = ({navigation, route}) => {
         handleBack={navigation.goBack}
       />
       <View style={styles.container}>
-        <View style={{flex: 1}}></View>
+        <Question quiz={quiz} />
         <View style={{flex: 1}}>
           <FlatList
             data={quiz.options}
@@ -58,6 +73,10 @@ const QuizPlayer = ({navigation, route}) => {
           />
         </View>
       </View>
+    </View>
+  ) : (
+    <View style={styles.loading}>
+      <QuestionIcon style={styles.loadingIcon} fill="white" />
     </View>
   );
 };
@@ -93,5 +112,14 @@ const styles = StyleSheet.create({
   redButton: {
     backgroundColor: '#3a2a2a',
     borderColor: '#a86666',
+  },
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingIcon: {
+    width: 54,
+    height: 54,
   },
 });
