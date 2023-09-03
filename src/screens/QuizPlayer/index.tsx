@@ -1,25 +1,58 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useReducer} from 'react';
 import ScreenTitle from '../../components/ScreenTitle';
 import PlayOutlineIcon from '../../components/icons/PlayOutlineIcon';
-import {QuizAnswer, QuizItem} from '../../utils/types';
+import {QuizAnswer} from '../../utils/types';
 import AnswerCheckbox from './components/AnswerCheckbox';
 import Space from '../../components/common/Space';
 import Question from './components/Question';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {setQuiz} from '../../features/game/gameSlice';
-import QuestionIcon from '../../components/icons/QuestionIcon';
 import GameHeader from '../../partials/GameHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from '../../components/Modal';
+import Title from '../../components/common/Title';
+import HomeIcon from '../../components/icons/HomeIcon';
+import RefreshIcon from '../../components/icons/RefreshIcon';
+import HeartIcon from '../../components/icons/HeartIcon';
+import RightArrow from '../../components/icons/RightArrow';
+import DollarIcon from '../../components/icons/DollarIcon';
+
+type InitialState = {
+  answer: string | number;
+  correct: boolean;
+  resultModalState: boolean;
+};
+
+const initialState: InitialState = {
+  answer: '',
+  correct: false,
+  resultModalState: true,
+};
+
+const reducer = (state: InitialState, action) => {
+  switch (action.type) {
+    case 'switch-result-modal':
+      return {
+        ...state,
+        resultModalState: !state.resultModalState,
+      };
+    default:
+      return state;
+  }
+};
 
 const QuizPlayer = ({navigation, route}) => {
-  const {quiz} = useAppSelector(state => state.game);
+  const game = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
-  const [initialized, setInitialized] = useState(false);
-  const [answer, setAnswer] = useState<string | number>('');
+  const [state, localDispatch] = useReducer(reducer, initialState);
 
-  const answerQuiz = async (option: string | number) => {
-    setAnswer(option);
+  const switchResultModal = () => {
+    localDispatch({type: 'switch-result-modal'});
   };
+  const backToHome = () => {};
+  const replay = () => {};
+  const answerQuiz = async (option: string | number) => {};
 
   const renderAnswer = ({item: option}: {item: QuizAnswer}) => {
     return (
@@ -27,18 +60,20 @@ const QuizPlayer = ({navigation, route}) => {
         key={option}
         style={[
           styles.answerButton,
-          answer !== option
+          state.answer !== option
             ? {}
-            : answer === quiz.answer
+            : game.quiz.answer === state.answer
             ? styles.greenButton
             : styles.redButton,
         ]}
         activeOpacity={0.5}
-        disabled={answer !== ''}
+        disabled={state.answer !== ''}
         onPress={() => answerQuiz(option)}>
         <AnswerCheckbox
           state={
-            answer !== option || answer === '' ? null : answer === quiz.answer
+            state.answer !== option || state.answer === ''
+              ? null
+              : game.quiz.answer === state.answer
           }
         />
         <Space distance={8} />
@@ -51,13 +86,7 @@ const QuizPlayer = ({navigation, route}) => {
     dispatch(setQuiz(route.params.level));
   }, []);
 
-  useEffect(() => {
-    if (quiz.level === route.params.level) {
-      setInitialized(true);
-    }
-  }, [quiz]);
-
-  return initialized ? (
+  return (
     <View style={{flex: 1}}>
       <GameHeader />
       <ScreenTitle
@@ -66,21 +95,67 @@ const QuizPlayer = ({navigation, route}) => {
         handleBack={navigation.goBack}
       />
       <View style={styles.container}>
-        <Question quiz={quiz} />
+        <Question quiz={game.quiz} />
         <Space distance={6} vertical />
         <View>
           <FlatList
-            data={quiz.options}
+            data={game.quiz.options}
             ItemSeparatorComponent={() => <Space vertical distance={5} />}
             keyExtractor={o => o.toString()}
             renderItem={renderAnswer}
           />
         </View>
       </View>
-    </View>
-  ) : (
-    <View style={styles.loading}>
-      <QuestionIcon style={styles.loadingIcon} fill="white" />
+
+      <Modal
+        isVisible={state.resultModalState}
+        onBackButtonPress={switchResultModal}
+        onBackdropPress={switchResultModal}
+        modalViewStyles={[
+          styles.resultModal,
+          state.correct ? styles.greenModal : styles.redModal,
+        ]}>
+        {state.correct ? (
+          <>
+            <Title title="Correct !" size={18} />
+            <View style={styles.resultModalButtons}>
+              <TouchableOpacity style={styles.resultModalButton}>
+                <HomeIcon style={styles.resultModalButtonIcon} />
+                <Text style={styles.resultModalButtonTitle}>Home</Text>
+              </TouchableOpacity>
+              <Space distance={12} />
+              <TouchableOpacity style={styles.resultModalButton}>
+                <RightArrow style={styles.resultModalButtonIcon} />
+                <Text style={styles.resultModalButtonTitle}>Next</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.resultModalBottom}>
+              <Title title="+5" size={20} />
+              <DollarIcon style={styles.resultModalResIcon} fill="white" />
+            </View>
+          </>
+        ) : (
+          <>
+            <Title title="Wrong ! Try again" size={18} />
+            <View style={styles.resultModalButtons}>
+              <TouchableOpacity style={styles.resultModalButton}>
+                <HomeIcon style={styles.resultModalButtonIcon} />
+                <Text style={styles.resultModalButtonTitle}>Home</Text>
+              </TouchableOpacity>
+              <Space distance={12} />
+              <TouchableOpacity style={styles.resultModalButton}>
+                <RefreshIcon style={styles.resultModalButtonIcon} />
+                <Text style={styles.resultModalButtonTitle}>Replay</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.resultModalBottom}>
+              <Title title="-1" size={20} />
+              <Space distance={4} />
+              <HeartIcon style={styles.resultModalResIcon} fill="white" />
+            </View>
+          </>
+        )}
+      </Modal>
     </View>
   );
 };
@@ -125,5 +200,43 @@ const styles = StyleSheet.create({
   loadingIcon: {
     width: 54,
     height: 54,
+  },
+  resultModal: {
+    alignItems: 'center',
+  },
+  greenModal: {
+    backgroundColor: '#378947',
+  },
+  redModal: {
+    backgroundColor: '#af5050',
+  },
+  resultModalButtons: {
+    marginVertical: 20,
+    flexDirection: 'row',
+  },
+  resultModalButton: {
+    width: 90,
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#ffffff30',
+    borderRadius: 6,
+  },
+  resultModalButtonIcon: {
+    width: 30,
+    height: 30,
+    fill: 'white',
+  },
+  resultModalButtonTitle: {
+    marginTop: 6,
+    fontWeight: '700',
+    fontSize: 13,
+  },
+  resultModalResIcon: {
+    width: 30,
+    height: 30,
+  },
+  resultModalBottom: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
