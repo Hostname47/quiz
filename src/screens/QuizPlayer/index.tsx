@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect, useReducer, useCallback} from 'react';
 import ScreenTitle from '../../components/ScreenTitle';
 import PlayOutlineIcon from '../../components/icons/PlayOutlineIcon';
 import {QuizAnswer} from '../../utils/types';
@@ -18,6 +18,7 @@ import HeartIcon from '../../components/icons/HeartIcon';
 import RightArrow from '../../components/icons/RightArrow';
 import DollarIcon from '../../components/icons/DollarIcon';
 import ShopIcon from '../../components/icons/ShopIcon';
+import Actions from './components/Actions';
 
 type InitialState = {
   answer: string | number;
@@ -65,9 +66,9 @@ const QuizPlayer = ({navigation, route}) => {
   const dispatch = useAppDispatch();
   const [state, localDispatch] = useReducer(reducer, initialState);
 
-  const switchResultModal = (to: boolean = false) => {
+  const switchResultModal = useCallback((to: boolean = false) => {
     localDispatch({type: 'switch-result-modal', payload: to});
-  };
+  }, []);
   const goToStore = () => {
     navigation.navigate('Shop');
   };
@@ -187,6 +188,12 @@ const QuizPlayer = ({navigation, route}) => {
       />
       <View style={[styles.container, game.lives <= 0 && {opacity: 0.5}]}>
         <Question quiz={game.quiz} />
+        <Actions
+          level={game.quiz.level}
+          helps={game.helps}
+          answer={state.answer}
+          switchResultModal={switchResultModal}
+        />
         <Space distance={6} vertical />
         <View>
           <FlatList
