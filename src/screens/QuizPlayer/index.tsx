@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState, useReducer} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import ScreenTitle from '../../components/ScreenTitle';
 import PlayOutlineIcon from '../../components/icons/PlayOutlineIcon';
 import {QuizAnswer} from '../../utils/types';
@@ -68,15 +68,16 @@ const QuizPlayer = ({navigation, route}) => {
   const switchResultModal = (to: boolean = false) => {
     localDispatch({type: 'switch-result-modal', payload: to});
   };
+  const goToStore = () => {
+    navigation.navigate('Shop');
+  };
   const backToHome = () => {
     switchResultModal(false);
     navigation.replace('Home');
   };
-
   const replay = () => {
     localDispatch({type: 'reset'});
   };
-
   const answerQuiz = async (option: string | number) => {
     const data = await AsyncStorage.getItem('game');
     if (data) {
@@ -99,7 +100,6 @@ const QuizPlayer = ({navigation, route}) => {
       });
     }
   };
-
   const nextQuiz = () => {
     dispatch(setQuiz(game.quiz.level + 1));
     localDispatch({type: 'reset'});
@@ -135,7 +135,27 @@ const QuizPlayer = ({navigation, route}) => {
 
   useEffect(() => {
     dispatch(setQuiz(route.params.level));
-  }, []);
+
+    const unsubscribeFocus = navigation.addListener('focus', () => {
+      // do something
+      if (game.lives <= 0) {
+        switchResultModal(true);
+      }
+    });
+    const unsubscribeBlur = navigation.addListener('blur', () => {
+      // do something
+      if (game.lives <= 0) {
+        setTimeout(() => {
+          switchResultModal(false);
+        });
+      }
+    });
+
+    return () => {
+      unsubscribeFocus();
+      unsubscribeBlur();
+    };
+  }, [game.lives]);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -165,7 +185,7 @@ const QuizPlayer = ({navigation, route}) => {
         Icon={PlayOutlineIcon}
         handleBack={navigation.goBack}
       />
-      <View style={styles.container}>
+      <View style={[styles.container, game.lives <= 0 && {opacity: 0.5}]}>
         <Question quiz={game.quiz} />
         <Space distance={6} vertical />
         <View>
@@ -220,10 +240,6 @@ const QuizPlayer = ({navigation, route}) => {
                   You don't have any lives left. You can buy lives in the store,
                   and press Replay button to play again !
                 </Text>
-                <TouchableOpacity style={styles.resultModalButton}>
-                  <ShopIcon style={styles.resultModalButtonIcon} />
-                  <Text style={styles.resultModalButtonTitle}>Store</Text>
-                </TouchableOpacity>
               </>
             )}
 
@@ -235,19 +251,30 @@ const QuizPlayer = ({navigation, route}) => {
                 <Text style={styles.resultModalButtonTitle}>Home</Text>
               </TouchableOpacity>
               <Space distance={12} />
-              <TouchableOpacity
-                style={styles.resultModalButton}
-                onPress={replay}
-                disabled={game.lives <= 0}>
-                <RefreshIcon style={styles.resultModalButtonIcon} />
-                <Text style={styles.resultModalButtonTitle}>Replay</Text>
-              </TouchableOpacity>
+              {game.lives > 0 ? (
+                <TouchableOpacity
+                  style={styles.resultModalButton}
+                  onPress={replay}
+                  disabled={game.lives <= 0}>
+                  <RefreshIcon style={styles.resultModalButtonIcon} />
+                  <Text style={styles.resultModalButtonTitle}>Replay</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.resultModalButton}
+                  onPress={goToStore}>
+                  <ShopIcon style={styles.resultModalButtonIcon} />
+                  <Text style={styles.resultModalButtonTitle}>Store</Text>
+                </TouchableOpacity>
+              )}
             </View>
-            <View style={styles.resultModalBottom}>
-              <Title title="-1" size={20} />
-              <Space distance={4} />
-              <HeartIcon style={styles.resultModalResIcon} fill="white" />
-            </View>
+            {state.answer && (
+              <View style={styles.resultModalBottom}>
+                <Title title="-1" size={20} />
+                <Space distance={4} />
+                <HeartIcon style={styles.resultModalResIcon} fill="white" />
+              </View>
+            )}
           </>
         )}
       </Modal>
@@ -306,8 +333,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#af5050',
   },
   resultModalButtons: {
-    marginBottom: 20,
-    marginTop: 12,
+    marginVertical: 20,
     flexDirection: 'row',
   },
   resultModalButton: {
