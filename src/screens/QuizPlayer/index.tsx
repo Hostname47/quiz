@@ -7,7 +7,7 @@ import AnswerCheckbox from './components/AnswerCheckbox';
 import Space from '../../components/common/Space';
 import Question from './components/Question';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {setQuiz} from '../../features/game/gameSlice';
+import {answer, setQuiz} from '../../features/game/gameSlice';
 import GameHeader from '../../partials/GameHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from '../../components/Modal';
@@ -27,11 +27,28 @@ type InitialState = {
 const initialState: InitialState = {
   answer: '',
   correct: false,
-  resultModalState: true,
+  resultModalState: false,
 };
 
 const reducer = (state: InitialState, action) => {
   switch (action.type) {
+    case 'answer':
+      return {
+        ...state,
+        answer: action.payload,
+      };
+    case 'evaluate':
+      return {
+        ...state,
+        correct: action.payload,
+        resultModalState: true,
+      };
+    case 'replay':
+      return {
+        ...state,
+        answer: '',
+        resultModalState: false,
+      };
     case 'switch-result-modal':
       return {
         ...state,
@@ -47,12 +64,42 @@ const QuizPlayer = ({navigation, route}) => {
   const dispatch = useAppDispatch();
   const [state, localDispatch] = useReducer(reducer, initialState);
 
-  const switchResultModal = () => {
-    localDispatch({type: 'switch-result-modal'});
+  const switchResultModal = (to: boolean = false) => {
+    localDispatch({type: 'switch-result-modal', payload: to});
   };
-  const backToHome = () => {};
-  const replay = () => {};
-  const answerQuiz = async (option: string | number) => {};
+  const backToHome = () => {
+    switchResultModal(false);
+    navigation.replace('Home');
+  };
+
+  const replay = () => {
+    if (game.lives === 0) {
+      return;
+    }
+
+    localDispatch({type: 'replay'});
+  };
+
+  const answerQuiz = async (option: string | number) => {
+    const data = await AsyncStorage.getItem('game');
+    if (data) {
+      const gameData = JSON.parse(data);
+
+      if (option === game.quiz.answer) {
+        gameData.money += 5;
+        gameData.level++;
+      } else {
+        gameData.lives--;
+      }
+
+      await AsyncStorage.setItem('game', JSON.stringify(gameData));
+
+      localDispatch({
+        type: 'answer',
+        payload: option,
+      });
+    }
+  };
 
   const renderAnswer = ({item: option}: {item: QuizAnswer}) => {
     return (
@@ -86,6 +133,26 @@ const QuizPlayer = ({navigation, route}) => {
     dispatch(setQuiz(route.params.level));
   }, []);
 
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (state.answer) {
+      timeout = setTimeout(() => {
+        dispatch(answer(state.answer));
+        localDispatch({
+          type: 'evaluate',
+          payload: state.answer === game.quiz.answer,
+        });
+      }, 200);
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [state.answer]);
+
   return (
     <View style={{flex: 1}}>
       <GameHeader />
@@ -109,8 +176,8 @@ const QuizPlayer = ({navigation, route}) => {
 
       <Modal
         isVisible={state.resultModalState}
-        onBackButtonPress={switchResultModal}
-        onBackdropPress={switchResultModal}
+        onBackButtonPress={() => switchResultModal(false)}
+        onBackdropPress={() => switchResultModal(false)}
         modalViewStyles={[
           styles.resultModal,
           state.correct ? styles.greenModal : styles.redModal,
@@ -119,7 +186,9 @@ const QuizPlayer = ({navigation, route}) => {
           <>
             <Title title="Correct !" size={18} />
             <View style={styles.resultModalButtons}>
-              <TouchableOpacity style={styles.resultModalButton}>
+              <TouchableOpacity
+                style={styles.resultModalButton}
+                onPress={backToHome}>
                 <HomeIcon style={styles.resultModalButtonIcon} />
                 <Text style={styles.resultModalButtonTitle}>Home</Text>
               </TouchableOpacity>
@@ -138,12 +207,16 @@ const QuizPlayer = ({navigation, route}) => {
           <>
             <Title title="Wrong ! Try again" size={18} />
             <View style={styles.resultModalButtons}>
-              <TouchableOpacity style={styles.resultModalButton}>
+              <TouchableOpacity
+                style={styles.resultModalButton}
+                onPress={backToHome}>
                 <HomeIcon style={styles.resultModalButtonIcon} />
                 <Text style={styles.resultModalButtonTitle}>Home</Text>
               </TouchableOpacity>
               <Space distance={12} />
-              <TouchableOpacity style={styles.resultModalButton}>
+              <TouchableOpacity
+                style={styles.resultModalButton}
+                onPress={replay}>
                 <RefreshIcon style={styles.resultModalButtonIcon} />
                 <Text style={styles.resultModalButtonTitle}>Replay</Text>
               </TouchableOpacity>

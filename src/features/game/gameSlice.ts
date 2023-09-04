@@ -79,6 +79,20 @@ const gameSlice = createSlice({
     setQuiz: (state, action: PayloadAction<number>) => {
       state.quiz = quizzes[action.payload - 1];
     },
+    answer: (state, action: PayloadAction<string | number>) => {
+      if (state.quiz.answer === action.payload) {
+        /**
+         * We  add 5$ and increment the level, even if the user pass
+         * an already passed level to help him collect money.
+         */
+        // if (state.level === state.quiz.level) {
+        state.money += 5;
+        state.level += 1;
+        // }
+      } else {
+        state.lives--;
+      }
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -98,4 +112,5 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {buyLives, buyHelps, addMoney, setQuiz} = gameSlice.actions;
+export const {buyLives, buyHelps, addMoney, setQuiz, answer} =
+  gameSlice.actions;
