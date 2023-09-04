@@ -8,7 +8,6 @@ import React from 'react';
 import Txt from '../../../components/common/Txt';
 import LockIcon from '../../../components/icons/LockIcon';
 import {useNavigation} from '@react-navigation/native';
-import Animated, {FadeInRight} from 'react-native-reanimated';
 
 type LevelButtonProps = {
   level: number;

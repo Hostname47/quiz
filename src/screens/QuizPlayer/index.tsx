@@ -17,6 +17,7 @@ import RefreshIcon from '../../components/icons/RefreshIcon';
 import HeartIcon from '../../components/icons/HeartIcon';
 import RightArrow from '../../components/icons/RightArrow';
 import DollarIcon from '../../components/icons/DollarIcon';
+import ShopIcon from '../../components/icons/ShopIcon';
 
 type InitialState = {
   answer: string | number;
@@ -43,7 +44,7 @@ const reducer = (state: InitialState, action) => {
         correct: action.payload,
         resultModalState: true,
       };
-    case 'replay':
+    case 'reset':
       return {
         ...state,
         answer: '',
@@ -52,7 +53,7 @@ const reducer = (state: InitialState, action) => {
     case 'switch-result-modal':
       return {
         ...state,
-        resultModalState: !state.resultModalState,
+        resultModalState: action.payload,
       };
     default:
       return state;
@@ -73,11 +74,7 @@ const QuizPlayer = ({navigation, route}) => {
   };
 
   const replay = () => {
-    if (game.lives === 0) {
-      return;
-    }
-
-    localDispatch({type: 'replay'});
+    localDispatch({type: 'reset'});
   };
 
   const answerQuiz = async (option: string | number) => {
@@ -87,7 +84,9 @@ const QuizPlayer = ({navigation, route}) => {
 
       if (option === game.quiz.answer) {
         gameData.money += 5;
-        gameData.level++;
+        if (game.quiz.level === gameData.level) {
+          gameData.level++;
+        }
       } else {
         gameData.lives--;
       }
@@ -99,6 +98,11 @@ const QuizPlayer = ({navigation, route}) => {
         payload: option,
       });
     }
+  };
+
+  const nextQuiz = () => {
+    dispatch(setQuiz(game.quiz.level + 1));
+    localDispatch({type: 'reset'});
   };
 
   const renderAnswer = ({item: option}: {item: QuizAnswer}) => {
@@ -114,7 +118,7 @@ const QuizPlayer = ({navigation, route}) => {
             : styles.redButton,
         ]}
         activeOpacity={0.5}
-        disabled={state.answer !== ''}
+        disabled={state.answer !== '' || game.lives <= 0}
         onPress={() => answerQuiz(option)}>
         <AnswerCheckbox
           state={
@@ -193,7 +197,9 @@ const QuizPlayer = ({navigation, route}) => {
                 <Text style={styles.resultModalButtonTitle}>Home</Text>
               </TouchableOpacity>
               <Space distance={12} />
-              <TouchableOpacity style={styles.resultModalButton}>
+              <TouchableOpacity
+                style={styles.resultModalButton}
+                onPress={nextQuiz}>
                 <RightArrow style={styles.resultModalButtonIcon} />
                 <Text style={styles.resultModalButtonTitle}>Next</Text>
               </TouchableOpacity>
@@ -205,7 +211,22 @@ const QuizPlayer = ({navigation, route}) => {
           </>
         ) : (
           <>
-            <Title title="Wrong ! Try again" size={18} />
+            {game.lives > 0 ? (
+              <Title title="Wrong ! Try again" size={18} />
+            ) : (
+              <>
+                <Title title="Unable to play" size={18} />
+                <Text style={styles.livesMessage}>
+                  You don't have any lives left. You can buy lives in the store,
+                  and press Replay button to play again !
+                </Text>
+                <TouchableOpacity style={styles.resultModalButton}>
+                  <ShopIcon style={styles.resultModalButtonIcon} />
+                  <Text style={styles.resultModalButtonTitle}>Store</Text>
+                </TouchableOpacity>
+              </>
+            )}
+
             <View style={styles.resultModalButtons}>
               <TouchableOpacity
                 style={styles.resultModalButton}
@@ -216,7 +237,8 @@ const QuizPlayer = ({navigation, route}) => {
               <Space distance={12} />
               <TouchableOpacity
                 style={styles.resultModalButton}
-                onPress={replay}>
+                onPress={replay}
+                disabled={game.lives <= 0}>
                 <RefreshIcon style={styles.resultModalButtonIcon} />
                 <Text style={styles.resultModalButtonTitle}>Replay</Text>
               </TouchableOpacity>
@@ -284,7 +306,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#af5050',
   },
   resultModalButtons: {
-    marginVertical: 20,
+    marginBottom: 20,
+    marginTop: 12,
     flexDirection: 'row',
   },
   resultModalButton: {
@@ -298,11 +321,12 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     fill: 'white',
+    marginBottom: 6,
   },
   resultModalButtonTitle: {
-    marginTop: 6,
     fontWeight: '700',
     fontSize: 13,
+    textAlign: 'center',
   },
   resultModalResIcon: {
     width: 30,
@@ -311,5 +335,12 @@ const styles = StyleSheet.create({
   resultModalBottom: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  livesMessage: {
+    fontSize: 13,
+    lineHeight: 20,
+    textAlign: 'center',
+    marginVertical: 12,
+    paddingHorizontal: 30,
   },
 });

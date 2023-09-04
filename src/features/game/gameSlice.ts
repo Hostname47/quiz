@@ -84,11 +84,16 @@ const gameSlice = createSlice({
         /**
          * We  add 5$ and increment the level, even if the user pass
          * an already passed level to help him collect money.
+         *
+         * Cencerning level, the user should pass the last level he
+         * reached so far in order to increment the level; which means
+         * if the user pass an already passed level, we don't have to
+         * increment the level value.
          */
-        // if (state.level === state.quiz.level) {
         state.money += 5;
-        state.level += 1;
-        // }
+        if (state.level === state.quiz.level) {
+          state.level += 1;
+        }
       } else {
         state.lives--;
       }
