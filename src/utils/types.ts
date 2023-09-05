@@ -19,8 +19,8 @@ export type QuizAnswer = string | number;
 type Quiz = {
   level: number;
   type: 'text' | 'image' | 'image-with-segments';
-  options: (string | number)[];
-  answer: string | number;
+  options: QuizAnswer[];
+  answer: QuizAnswer;
 };
 
 export type TextQuiz = Quiz & {

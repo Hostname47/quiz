@@ -4,30 +4,61 @@ import LevelIcon from '../../../components/icons/LevelIcon';
 import Space from '../../../components/common/Space';
 import HelpIcon from '../../../components/icons/HelpIcon';
 import GearIcon from '../../../components/icons/GearIcon';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {reduceHelp} from '../../../features/game/gameSlice';
 
 type ActionsType = {
-  level: number;
-  helps: number;
   answer: string;
+  supportApplied: boolean;
+  applySupport: () => void;
   switchResultModal: (to?: boolean) => void;
 };
 
-const Actions = ({level, helps, answer, switchResultModal}: ActionsType) => {
+const Actions = ({
+  answer,
+  supportApplied,
+  applySupport,
+  switchResultModal,
+}: ActionsType) => {
+  const game = useAppSelector(state => state.game);
+  const dispatch = useAppDispatch();
+
+  const support = async () => {
+    applySupport();
+    dispatch(reduceHelp());
+
+    const data = await AsyncStorage.getItem('game');
+    if (data) {
+      const game = JSON.parse(data);
+      game.helps--;
+      await AsyncStorage.setItem('game', JSON.stringify(game));
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.levelBox}>
         <LevelIcon style={styles.actionIcon} fill="#aebdc4" />
         <Space distance={4} />
         <Text style={styles.actionTitle}>
-          Level : <Text style={styles.level}>{level}</Text>
+          Level : <Text style={styles.level}>{game.quiz.level}</Text>
         </Text>
       </View>
 
       <View style={styles.buttonsBox}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            (answer !== '' || supportApplied || game.helps === 0) && {
+              opacity: 0.5,
+            },
+          ]}
+          disabled={answer !== '' || supportApplied || game.helps === 0}
+          onPress={support}>
           <HelpIcon style={styles.buttonIcon} fill="#ede43b" />
           <Space distance={8} />
-          <Text style={styles.buttonTitle}>{helps}</Text>
+          <Text style={styles.buttonTitle}>{game.helps}</Text>
         </TouchableOpacity>
         <View style={styles.buttonSeparator} />
         <TouchableOpacity

@@ -104,11 +104,12 @@ const UserSection = () => {
 
         dispatch(updatePseudo(pseudo));
       }
+
+      setPseudoEdit(false);
     } catch (error) {
       // Handle error
     } finally {
       lock.current = true;
-      setPseudoEdit(false);
     }
   };
 

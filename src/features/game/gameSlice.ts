@@ -98,6 +98,9 @@ const gameSlice = createSlice({
         state.lives--;
       }
     },
+    reduceHelp: state => {
+      state.helps--;
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -117,5 +120,5 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {buyLives, buyHelps, addMoney, setQuiz, answer} =
+export const {buyLives, buyHelps, addMoney, setQuiz, answer, reduceHelp} =
   gameSlice.actions;

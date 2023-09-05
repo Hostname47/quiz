@@ -19,16 +19,23 @@ import RightArrow from '../../components/icons/RightArrow';
 import DollarIcon from '../../components/icons/DollarIcon';
 import ShopIcon from '../../components/icons/ShopIcon';
 import Actions from './components/Actions';
+import _ from 'lodash';
+
+type Answer = string | number;
 
 type InitialState = {
-  answer: string | number;
+  answer: Answer;
   correct: boolean;
+  supportApplied: boolean;
+  supportAnswersToExclude: Answer[];
   resultModalState: boolean;
 };
 
 const initialState: InitialState = {
   answer: '',
   correct: false,
+  supportApplied: false,
+  supportAnswersToExclude: [],
   resultModalState: false,
 };
 
@@ -49,6 +56,8 @@ const reducer = (state: InitialState, action) => {
       return {
         ...state,
         answer: '',
+        supportApplied: false,
+        supportAnswersToExclude: [],
         resultModalState: false,
       };
     case 'switch-result-modal':
@@ -56,6 +65,26 @@ const reducer = (state: InitialState, action) => {
         ...state,
         resultModalState: action.payload,
       };
+    case 'apply-support': {
+      const quiz = action.payload;
+      // First we need to check the place of the right answer in order to know what to exclude
+      // If the answer is the first or second answer, we need to exclude the last 2 answers.
+      // If the answer is the third or last answer, we exlude the first 2 answers.
+      // For sake of simplicty let's asume that all questions have 4 answers
+      const index = quiz.options.indexOf(quiz.answer);
+      let excludedAnswers: QuizAnswer[] = [];
+      if (index <= 1) {
+        excludedAnswers = _.takeRight(quiz.options, 2);
+      } else {
+        excludedAnswers = _.take(quiz.options, 2);
+      }
+
+      return {
+        ...state,
+        supportAnswersToExclude: excludedAnswers,
+        supportApplied: true,
+      };
+    }
     default:
       return state;
   }
@@ -105,6 +134,12 @@ const QuizPlayer = ({navigation, route}) => {
     dispatch(setQuiz(game.quiz.level + 1));
     localDispatch({type: 'reset'});
   };
+  const applySupport = () => {
+    localDispatch({type: 'apply-support', payload: game.quiz});
+  };
+  const isExcludedAnswer = (answer: Answer): boolean => {
+    return state.supportAnswersToExclude.includes(answer);
+  };
 
   const renderAnswer = ({item: option}: {item: QuizAnswer}) => {
     return (
@@ -117,9 +152,12 @@ const QuizPlayer = ({navigation, route}) => {
             : game.quiz.answer === state.answer
             ? styles.greenButton
             : styles.redButton,
+          isExcludedAnswer(option) && {opacity: 0.4},
         ]}
         activeOpacity={0.5}
-        disabled={state.answer !== '' || game.lives <= 0}
+        disabled={
+          state.answer !== '' || game.lives <= 0 || isExcludedAnswer(option)
+        }
         onPress={() => answerQuiz(option)}>
         <AnswerCheckbox
           state={
@@ -189,9 +227,9 @@ const QuizPlayer = ({navigation, route}) => {
       <View style={[styles.container, game.lives <= 0 && {opacity: 0.5}]}>
         <Question quiz={game.quiz} />
         <Actions
-          level={game.quiz.level}
-          helps={game.helps}
           answer={state.answer}
+          supportApplied={state.supportApplied}
+          applySupport={applySupport}
           switchResultModal={switchResultModal}
         />
         <Space distance={6} vertical />
