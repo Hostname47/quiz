@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {
   ImageQuiz,
@@ -9,8 +9,6 @@ import {
 import TextQuestion from './TextQuestion';
 import ImageQuestion from './ImageQuestion';
 import ImageWithSegmentsQuestion from './ImageWithSegmentsQuestion';
-import LevelIcon from '../../../../components/icons/LevelIcon';
-import Space from '../../../../components/common/Space';
 
 const QuestionType = ({quiz}: {quiz: QuizItem}) => {
   switch (quiz.type) {
@@ -41,5 +39,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     overflow: 'hidden',
+    maxHeight: 220,
   },
 });

@@ -36,7 +36,15 @@ export const quizzes: QuizItem[] = [
     segments: [
       {
         type: 'text',
-        value: 'textual segment',
+        value: 'segment',
+      },
+      {
+        type: 'image',
+        value: require('./quizzes-images/roberto.png'),
+      },
+      {
+        type: 'text',
+        value: 'segment',
       },
       {
         type: 'image',

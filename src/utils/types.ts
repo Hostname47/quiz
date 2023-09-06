@@ -34,7 +34,7 @@ export type ImageQuiz = TextQuiz & {
 /**
  * The structure of segment type may change later
  */
-type Segment =
+export type QuestionSegment =
   | {
       type: 'text';
       value: string;
@@ -46,7 +46,7 @@ type Segment =
 
 export type ImageWithSegments = Quiz & {
   image: any;
-  segments: Segment[]; // Here segments can be anything; It can be a string, number or even an image
+  segments: QuestionSegment[]; // Here segments can be anything; It can be a string, number or even an image
 };
 
 export type QuizItem = TextQuiz | ImageQuiz | ImageWithSegments;
