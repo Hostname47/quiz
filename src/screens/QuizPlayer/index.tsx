@@ -20,6 +20,7 @@ import DollarIcon from '../../components/icons/DollarIcon';
 import ShopIcon from '../../components/icons/ShopIcon';
 import Actions from './components/Actions';
 import _ from 'lodash';
+import LeftArrow from '../../components/icons/LeftArrow';
 
 type Answer = string | number;
 
@@ -115,7 +116,10 @@ const QuizPlayer = ({navigation, route}) => {
 
       if (option === game.quiz.answer) {
         gameData.money += 5;
-        if (game.quiz.level === gameData.level) {
+        if (
+          game.quiz.level === gameData.level &&
+          gameData.level < game.levelsCount
+        ) {
           gameData.level++;
         }
       } else {
@@ -253,7 +257,28 @@ const QuizPlayer = ({navigation, route}) => {
         ]}>
         {state.correct ? (
           <>
-            <Title title="Correct !" size={18} />
+            <Title
+              title={
+                game.quiz.level < game.levelsCount
+                  ? 'Correct !'
+                  : '🏆 Congratulation 🏆'
+              }
+              size={18}
+            />
+            {game.quiz.level >= game.levelsCount && (
+              <>
+                <Text style={styles.livesMessage}>
+                  Congratulations! 🎉 You've conquered every level and reached
+                  the end of the game. You're a true champion! Thanks for
+                  playing, and we hope you had an amazing time.
+                </Text>
+                <Text style={styles.livesMessage}>
+                  If you have any questions or improvements to add, feel free to
+                  contact us by sending all the informations along with name,
+                  and we'll include your name within our contributors list.
+                </Text>
+              </>
+            )}
             <View style={styles.resultModalButtons}>
               <TouchableOpacity
                 style={styles.resultModalButton}
@@ -262,12 +287,21 @@ const QuizPlayer = ({navigation, route}) => {
                 <Text style={styles.resultModalButtonTitle}>Home</Text>
               </TouchableOpacity>
               <Space distance={12} />
-              <TouchableOpacity
-                style={styles.resultModalButton}
-                onPress={nextQuiz}>
-                <RightArrow style={styles.resultModalButtonIcon} />
-                <Text style={styles.resultModalButtonTitle}>Next</Text>
-              </TouchableOpacity>
+              {game.quiz.level < game.levelsCount ? (
+                <TouchableOpacity
+                  style={styles.resultModalButton}
+                  onPress={nextQuiz}>
+                  <RightArrow style={styles.resultModalButtonIcon} />
+                  <Text style={styles.resultModalButtonTitle}>Next</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.resultModalButton}
+                  onPress={() => switchResultModal(false)}>
+                  <LeftArrow style={styles.resultModalButtonIcon} />
+                  <Text style={styles.resultModalButtonTitle}>Back</Text>
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.resultModalBottom}>
               <Title title="+5" size={20} />

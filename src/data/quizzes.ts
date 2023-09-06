@@ -51,7 +51,7 @@ export const quizzes: QuizItem[] = [
         value: require('./quizzes-images/roberto.png'),
       },
     ],
-    answer: 'Roberto Baggio',
+    answer: 'segment 1',
   },
   {
     level: 5,

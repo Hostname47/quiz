@@ -24,6 +24,7 @@ type InitialState = {
   money: number;
   level: number;
   quiz: QuizItem;
+  levelsCount: number;
 };
 
 const initialState: InitialState = {
@@ -33,6 +34,7 @@ const initialState: InitialState = {
   money: gameDefaults.money,
   level: gameDefaults.level,
   quiz: quizzes[0],
+  levelsCount: quizzes.length,
 };
 
 export const initializeGame = createAsyncThunk(
@@ -92,7 +94,13 @@ const gameSlice = createSlice({
          */
         state.money += 5;
         if (state.level === state.quiz.level) {
-          state.level += 1;
+          /**
+           * If the user reaches the last level, we don't have to
+           * increment the level since he completed all levels.
+           */
+          if (state.level < state.levelsCount) {
+            state.level += 1;
+          }
         }
       } else {
         state.lives--;
