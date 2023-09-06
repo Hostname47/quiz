@@ -78,6 +78,9 @@ const gameSlice = createSlice({
     addMoney: (state, action: PayloadAction<number>) => {
       state.money += action.payload;
     },
+    addLives: (state, action: PayloadAction<number>) => {
+      state.lives += action.payload;
+    },
     setQuiz: (state, action: PayloadAction<number>) => {
       state.quiz = quizzes[action.payload - 1];
     },
@@ -128,5 +131,12 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {buyLives, buyHelps, addMoney, setQuiz, answer, reduceHelp} =
-  gameSlice.actions;
+export const {
+  buyLives,
+  buyHelps,
+  addMoney,
+  addLives,
+  setQuiz,
+  answer,
+  reduceHelp,
+} = gameSlice.actions;
