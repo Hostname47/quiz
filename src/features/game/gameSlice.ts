@@ -7,6 +7,8 @@ import {
   LIVES_NUMBER_TO_BUY,
   LIVES_PRICE,
 } from '../../utils/constants';
+import {QuizItem} from '../../utils/types';
+import {quizzes} from '../../data/quizzes';
 
 type Game = {
   lives: number;
@@ -21,6 +23,8 @@ type InitialState = {
   helps: number;
   money: number;
   level: number;
+  quiz: QuizItem;
+  levelsCount: number;
 };
 
 const initialState: InitialState = {
@@ -29,6 +33,8 @@ const initialState: InitialState = {
   helps: gameDefaults.helps,
   money: gameDefaults.money,
   level: gameDefaults.level,
+  quiz: quizzes[0],
+  levelsCount: quizzes.length,
 };
 
 export const initializeGame = createAsyncThunk(
@@ -72,6 +78,40 @@ const gameSlice = createSlice({
     addMoney: (state, action: PayloadAction<number>) => {
       state.money += action.payload;
     },
+    addLives: (state, action: PayloadAction<number>) => {
+      state.lives += action.payload;
+    },
+    setQuiz: (state, action: PayloadAction<number>) => {
+      state.quiz = quizzes[action.payload - 1];
+    },
+    answer: (state, action: PayloadAction<string | number>) => {
+      if (state.quiz.answer === action.payload) {
+        /**
+         * We  add 5$ and increment the level, even if the user pass
+         * an already passed level to help him collect money.
+         *
+         * Cencerning level, the user should pass the last level he
+         * reached so far in order to increment the level; which means
+         * if the user pass an already passed level, we don't have to
+         * increment the level value.
+         */
+        state.money += 5;
+        if (state.level === state.quiz.level) {
+          /**
+           * If the user reaches the last level, we don't have to
+           * increment the level since he completed all levels.
+           */
+          if (state.level < state.levelsCount) {
+            state.level += 1;
+          }
+        }
+      } else {
+        state.lives--;
+      }
+    },
+    reduceHelp: state => {
+      state.helps--;
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -91,4 +131,12 @@ const gameSlice = createSlice({
 });
 
 export default gameSlice.reducer;
-export const {buyLives, buyHelps, addMoney} = gameSlice.actions;
+export const {
+  buyLives,
+  buyHelps,
+  addMoney,
+  addLives,
+  setQuiz,
+  answer,
+  reduceHelp,
+} = gameSlice.actions;
