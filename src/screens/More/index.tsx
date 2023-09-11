@@ -1,11 +1,14 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import Home from './Home';
 
 const More = () => {
+  const Stack = createStackNavigator();
+
   return (
-    <View>
-      <Text>More</Text>
-    </View>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen component={Home} name="Home" />
+    </Stack.Navigator>
   );
 };
 
