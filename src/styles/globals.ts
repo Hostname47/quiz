@@ -15,7 +15,6 @@ export const globalStyles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: '600',
-    color: '#4fbeff',
   },
   blue: {
     color: '#4fbeff',
@@ -27,5 +26,19 @@ export const globalStyles = StyleSheet.create({
   },
   spaceBetween: {
     justifyContent: 'space-between',
+  },
+  centeredSection: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
+  text: {
+    letterSpacing: 0.6,
+    lineHeight: 20,
+    fontSize: 14,
+    marginBottom: 6,
   },
 });
