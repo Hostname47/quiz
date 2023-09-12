@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {View, StyleSheet, ViewStyle, ViewProps} from 'react-native';
+import {View, StyleSheet, ViewStyle, ViewProps, StyleProp} from 'react-native';
 import RNModal from 'react-native-modal';
 
 type ModalProps = {
@@ -7,7 +7,7 @@ type ModalProps = {
   onBackdropPress?: () => void;
   isVisible: boolean;
   children: ReactNode;
-  modalViewStyles?: ViewStyle;
+  modalViewStyles?: StyleProp<ViewStyle>;
   modalViewProps?: ViewProps;
   testID?: string;
 };

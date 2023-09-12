@@ -7,9 +7,10 @@ import GearIcon from '../../../components/icons/GearIcon';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {reduceHelp} from '../../../features/game/gameSlice';
+import {QuizAnswer} from '../../../utils/types';
 
 type ActionsType = {
-  answer: string;
+  answer: QuizAnswer;
   supportApplied: boolean;
   applySupport: () => void;
   switchResultModal: (to?: boolean) => void;

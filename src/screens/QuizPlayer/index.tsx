@@ -2,7 +2,7 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useReducer, useCallback} from 'react';
 import ScreenTitle from '../../components/ScreenTitle';
 import PlayOutlineIcon from '../../components/icons/PlayOutlineIcon';
-import {QuizAnswer} from '../../utils/types';
+import {QuizAnswer, QuizItem} from '../../utils/types';
 import AnswerCheckbox from './components/AnswerCheckbox';
 import Space from '../../components/common/Space';
 import Question from './components/Question';
@@ -22,30 +22,44 @@ import Actions from './components/Actions';
 import _ from 'lodash';
 import LeftArrow from '../../components/icons/LeftArrow';
 
-type Answer = string | number;
-
-type InitialState = {
-  answer: Answer;
-  correct: boolean;
-  supportApplied: boolean;
-  supportAnswersToExclude: Answer[];
-  resultModalState: boolean;
+type ApplySupportType = {
+  type: 'apply-support';
+  payload: QuizItem;
 };
 
-type ActionWithPayload = ActionWithoutPayload & {
-  payload: string | boolean;
+type AnswerActionType = {
+  type: 'answer';
+  payload: QuizAnswer;
+};
+
+type EvaluateAnswerActionType = {
+  type: 'evaluate';
+  payload: boolean;
+};
+
+type SwitchResultModalPayload = {
+  type: 'switch-result-modal';
+  payload: boolean;
 };
 
 type ActionWithoutPayload = {
-  type:
-    | 'answer'
-    | 'evaluate'
-    | 'reset'
-    | 'switch-result-modal'
-    | 'apply-support';
+  type: 'reset';
 };
 
-type Action = ActionWithPayload | ActionWithPayload;
+type Action =
+  | ActionWithoutPayload
+  | AnswerActionType
+  | EvaluateAnswerActionType
+  | ApplySupportType
+  | SwitchResultModalPayload;
+
+type InitialState = {
+  answer: QuizAnswer;
+  correct: boolean;
+  supportApplied: boolean;
+  supportAnswersToExclude: QuizAnswer[];
+  resultModalState: boolean;
+};
 
 const initialState: InitialState = {
   answer: '',
@@ -156,7 +170,7 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
   const applySupport = () => {
     localDispatch({type: 'apply-support', payload: game.quiz});
   };
-  const isExcludedAnswer = (answer: Answer): boolean => {
+  const isExcludedAnswer = (answer: QuizAnswer): boolean => {
     return state.supportAnswersToExclude.includes(answer);
   };
   const renderAnswer = ({item: option}: {item: QuizAnswer}) => {
