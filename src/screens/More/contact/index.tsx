@@ -19,6 +19,8 @@ import ScreenTitle from '../../../components/ScreenTitle';
 import TextIconButton from '../../../components/buttons/TextIconButton';
 import {DropdownOptionType} from '../../../components/controls/types';
 
+const CONTACT_EMAIL_ADDRESS = 'your-email@gmail.com';
+const APP_NAME = 'Quiz app';
 const CONTACT_SUBJECTS: DropdownOptionType[] = [
   {value: 'Propose an improvement'},
   {value: 'Suggest a feature'},
@@ -119,7 +121,7 @@ function Contact({navigation}) {
     }
 
     Linking.openURL(
-      `mailto:nassri.developer@gmail.com?subject=Quiz app : ${state.subject}&body=${state.message}`,
+      `mailto:${CONTACT_EMAIL_ADDRESS}?subject=${APP_NAME} : ${state.subject}&body=${state.message}`,
     );
 
     setTimeout(() => {
@@ -160,7 +162,7 @@ function Contact({navigation}) {
           />
         )}
 
-        <Text style={styles.title}>Subject :</Text>
+        <Text style={[styles.label, styles.blue]}>Subject :</Text>
 
         <Space distance={8} vertical />
 
@@ -174,7 +176,7 @@ function Contact({navigation}) {
 
         <Space distance={12} vertical />
 
-        <Text style={styles.title}>Message body :</Text>
+        <Text style={[styles.label, styles.blue]}>Message body :</Text>
 
         <Space distance={8} vertical />
 
@@ -217,6 +219,9 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0.6,
     marginBottom: 8,
+  },
+  label: {
+    fontWeight: '600',
   },
 });
 

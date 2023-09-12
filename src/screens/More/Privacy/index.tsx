@@ -8,6 +8,9 @@ import RocketIcon from '../../../components/icons/RocketIcon';
 import {globalStyles} from '../../../styles/globals';
 import Space from '../../../components/common/Space';
 
+const PATH_TO_PRIVACY_POLICY =
+  'https://website.com/apps/quiz/privacy-policy.html';
+
 const Privacy = ({navigation}) => {
   const [state, setState] = useState<boolean | null>(null);
 
@@ -28,7 +31,7 @@ const Privacy = ({navigation}) => {
       {state === null ? null : state ? (
         <WebView
           source={{
-            uri: 'https://hostname47.github.io/xghozt/nova/privacy-policy.html',
+            uri: PATH_TO_PRIVACY_POLICY,
           }}
         />
       ) : (

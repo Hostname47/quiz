@@ -10,6 +10,7 @@ import ShareIcon from '../../../components/icons/ShareIcon';
 import StarIcon from '../../../components/icons/StarIcon';
 import Signature from '../../../components/dev-signature/Signature';
 import Space from '../../../components/common/Space';
+import {handleShare} from '../../../utils/sharer';
 
 const Home = ({navigation}) => {
   return (
@@ -21,6 +22,7 @@ const Home = ({navigation}) => {
       />
       <View style={{flex: 1}}>
         <View style={styles.buttonSeaparator} />
+        {/* About the app */}
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.7}
@@ -30,6 +32,7 @@ const Home = ({navigation}) => {
           <Text style={styles.buttonLabel}>About the app</Text>
         </TouchableOpacity>
         <View style={styles.buttonSeaparator} />
+        {/* Privacy button */}
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.7}
@@ -39,6 +42,7 @@ const Home = ({navigation}) => {
           <Text style={styles.buttonLabel}>Privacy Policy</Text>
         </TouchableOpacity>
         <View style={styles.buttonSeaparator} />
+        {/* Terms and conditions button */}
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.7}
@@ -48,6 +52,7 @@ const Home = ({navigation}) => {
           <Text style={styles.buttonLabel}>Terms and Conditions</Text>
         </TouchableOpacity>
         <View style={styles.buttonSeaparator} />
+        {/* Contact us button */}
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.7}
@@ -57,10 +62,11 @@ const Home = ({navigation}) => {
           <Text style={styles.buttonLabel}>Contact Us</Text>
         </TouchableOpacity>
         <View style={styles.buttonSeaparator} />
+        {/* Share the app button */}
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.7}
-          onPress={() => {}}>
+          onPress={handleShare}>
           <ShareIcon style={styles.buttonIcon} />
           <Space distance={6} />
           <Text style={styles.buttonLabel}>Share with friends</Text>
