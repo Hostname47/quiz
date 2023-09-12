@@ -144,7 +144,6 @@ const QuizPlayer = ({navigation, route}) => {
   const isExcludedAnswer = (answer: Answer): boolean => {
     return state.supportAnswersToExclude.includes(answer);
   };
-
   const renderAnswer = ({item: option}: {item: QuizAnswer}) => {
     return (
       <TouchableOpacity
@@ -178,7 +177,9 @@ const QuizPlayer = ({navigation, route}) => {
 
   useEffect(() => {
     dispatch(setQuiz(route.params.level));
+  }, []);
 
+  useEffect(() => {
     const unsubscribeFocus = navigation.addListener('focus', () => {
       // do something
       if (game.lives <= 0) {
@@ -189,7 +190,7 @@ const QuizPlayer = ({navigation, route}) => {
       // do something
       if (game.lives <= 0) {
         setTimeout(() => {
-          switchResultModal(false);
+          localDispatch({type: 'reset'});
         });
       }
     });

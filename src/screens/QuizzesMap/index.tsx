@@ -8,8 +8,9 @@ import {quizzes} from '../../data/quizzes';
 import LevelButton from './components/LevelButton';
 import {useAppSelector} from '../../app/hooks';
 
-const QuizzesMap = ({navigation}) => {
+const QuizzesMap = ({navigation}: {navigation: any}) => {
   const {level} = useAppSelector(state => state.game);
+
   return (
     <View style={styles.container}>
       <GameHeader />

@@ -1,5 +1,9 @@
 import {QuizItem} from '../utils/types';
 
+/**
+ * examples of quiz types
+ */
+
 export const quizzes: QuizItem[] = [
   {
     level: 1,
@@ -32,7 +36,7 @@ export const quizzes: QuizItem[] = [
     level: 4,
     type: 'image-with-segments',
     image: require('./quizzes-images/roberto.png'),
-    options: ['segment 1', 1998],
+    options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'],
     segments: [
       {
         type: 'text',
@@ -51,7 +55,7 @@ export const quizzes: QuizItem[] = [
         value: require('./quizzes-images/roberto.png'),
       },
     ],
-    answer: 'segment 1',
+    answer: 'Answer 4',
   },
   {
     level: 5,
@@ -130,5 +134,30 @@ export const quizzes: QuizItem[] = [
       'Nicola Berti',
     ],
     answer: 'Roberto Baggio',
+  },
+  {
+    level: 11,
+    type: 'image-with-segments',
+    image: require('./quizzes-images/roberto.png'),
+    options: ['Answer1', 'Answer 2', 'Answer 3', 'Answer 4'],
+    segments: [
+      {
+        type: 'text',
+        value: 'hint 1',
+      },
+      {
+        type: 'text',
+        value: 'hint 2',
+      },
+      {
+        type: 'text',
+        value: 'hint 3',
+      },
+      {
+        type: 'text',
+        value: 'hint 4',
+      },
+    ],
+    answer: 'hint 3',
   },
 ];
