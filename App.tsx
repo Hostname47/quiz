@@ -15,6 +15,7 @@ import Header from './src/partials/Header';
 import Shop from './src/screens/Shop';
 import BootstrapState from './src/components/BootstrapState';
 import {navigationTheme} from './src/utils/navigation-theme';
+import {MenuProvider} from 'react-native-popup-menu';
 import Banner from './src/ads/Banner';
 
 // const {Screen, Navigator} = createStackNavigator<RootStackParamList>(); // temporarily disable typing navigation
@@ -26,24 +27,26 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <SafeAreaView style={{flex: 1}}>
-        <StatusBar backgroundColor="#191b1e" />
-        <Provider store={store}>
-          <BootstrapState />
-          <Header />
-          <Navigator screenOptions={{headerShown: false}}>
-            <Screen name="Home" component={Home} />
-            <Screen name="QuizzesMap" component={QuizzesMap} />
-            <Screen name="QuizPlayer" component={QuizPlayer} />
-            <Screen name="Shop" component={Shop} />
-            <Screen name="More" component={More} />
-          </Navigator>
-          {/* <Banner /> */}
-          <View style={styles.banner} />
-        </Provider>
-      </SafeAreaView>
-    </NavigationContainer>
+    <MenuProvider>
+      <NavigationContainer theme={navigationTheme}>
+        <SafeAreaView style={{flex: 1}}>
+          <StatusBar backgroundColor="#191b1e" />
+          <Provider store={store}>
+            <BootstrapState />
+            <Header />
+            <Navigator screenOptions={{headerShown: false}}>
+              <Screen name="Home" component={Home} />
+              <Screen name="QuizzesMap" component={QuizzesMap} />
+              <Screen name="QuizPlayer" component={QuizPlayer} />
+              <Screen name="Shop" component={Shop} />
+              <Screen name="More" component={More} />
+            </Navigator>
+            {/* <Banner /> */}
+            <View style={styles.banner} />
+          </Provider>
+        </SafeAreaView>
+      </NavigationContainer>
+    </MenuProvider>
   );
 }
 
