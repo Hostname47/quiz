@@ -7,17 +7,17 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import React from 'react';
-import {ImageWithSegments, QuestionSegment} from '../../../../utils/types';
+import {ImageWithHintsQuiz, QuestionHint} from '../../../../utils/types';
 
-const segmentsSeparator = () => {
+const hintsSeparator = () => {
   return <View style={styles.separator} />;
 };
 
-const TextSegment = ({content}: {content: string}) => {
+const TextHint = ({content}: {content: string}) => {
   return <Text style={styles.segmentText}>{content}</Text>;
 };
 
-const ImageSegment = ({source}: {source: ImageSourcePropType}) => {
+const ImageHint = ({source}: {source: ImageSourcePropType}) => {
   return (
     <View style={styles.segmentImageContainer}>
       <Image source={source} style={styles.segmentImage} />
@@ -25,13 +25,13 @@ const ImageSegment = ({source}: {source: ImageSourcePropType}) => {
   );
 };
 
-const ImageWithSegmentsQuestion = ({quiz}: {quiz: ImageWithSegments}) => {
-  const renderSegment = ({item: segment}: {item: QuestionSegment}) => {
+const ImageWithHintsQuestion = ({quiz}: {quiz: ImageWithHintsQuiz}) => {
+  const renderSegment = ({item: segment}: {item: QuestionHint}) => {
     switch (segment.type) {
       case 'text':
-        return <TextSegment content={segment.value} />;
+        return <TextHint content={segment.value} />;
       case 'image':
-        return <ImageSegment source={segment.value} />;
+        return <ImageHint source={segment.value} />;
     }
   };
 
@@ -44,16 +44,16 @@ const ImageWithSegmentsQuestion = ({quiz}: {quiz: ImageWithSegments}) => {
         <FlatList
           contentContainerStyle={styles.segmentsBox}
           horizontal
-          data={quiz.segments}
+          data={quiz.hints}
           renderItem={renderSegment}
-          ItemSeparatorComponent={segmentsSeparator}
+          ItemSeparatorComponent={hintsSeparator}
         />
       </View>
     </View>
   );
 };
 
-export default ImageWithSegmentsQuestion;
+export default ImageWithHintsQuestion;
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderColor: '#202226',
-    height: 60,
+    height: 50,
     backgroundColor: '#111214',
     alignItems: 'center',
   },
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.6,
   },
   segmentImageContainer: {
-    width: 44,
-    height: 44,
+    width: 38,
+    height: 38,
     backgroundColor: '#111214',
   },
   segmentImage: {

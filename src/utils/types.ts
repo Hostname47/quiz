@@ -18,7 +18,7 @@ export type QuizAnswer = string | number;
 
 type Quiz = {
   level: number;
-  type: 'text' | 'image' | 'image-with-segments';
+  type: 'text' | 'image' | 'image-with-hints';
   options: QuizAnswer[];
   answer: QuizAnswer;
 };
@@ -32,9 +32,9 @@ export type ImageQuiz = TextQuiz & {
 };
 
 /**
- * The structure of segment type may change later
+ * The structure of hint type might be changed later
  */
-export type QuestionSegment =
+export type QuestionHint =
   | {
       type: 'text';
       value: string;
@@ -44,9 +44,9 @@ export type QuestionSegment =
       value: ImageSourcePropType;
     };
 
-export type ImageWithSegments = Quiz & {
+export type ImageWithHintsQuiz = Quiz & {
   image: any;
-  segments: QuestionSegment[]; // Here segments can be anything; It can be a string, number or even an image
+  hints: QuestionHint[];
 };
 
-export type QuizItem = TextQuiz | ImageQuiz | ImageWithSegments;
+export type QuizItem = TextQuiz | ImageQuiz | ImageWithHintsQuiz;

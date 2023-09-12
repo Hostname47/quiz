@@ -32,6 +32,21 @@ type InitialState = {
   resultModalState: boolean;
 };
 
+type ActionWithPayload = ActionWithoutPayload & {
+  payload: string | boolean;
+};
+
+type ActionWithoutPayload = {
+  type:
+    | 'answer'
+    | 'evaluate'
+    | 'reset'
+    | 'switch-result-modal'
+    | 'apply-support';
+};
+
+type Action = ActionWithPayload | ActionWithPayload;
+
 const initialState: InitialState = {
   answer: '',
   correct: false,
@@ -40,7 +55,7 @@ const initialState: InitialState = {
   resultModalState: false,
 };
 
-const reducer = (state: InitialState, action) => {
+const reducer = (state: InitialState, action: Action) => {
   switch (action.type) {
     case 'answer':
       return {
@@ -91,7 +106,7 @@ const reducer = (state: InitialState, action) => {
   }
 };
 
-const QuizPlayer = ({navigation, route}) => {
+const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
   const game = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
   const [state, localDispatch] = useReducer(reducer, initialState);

@@ -76,7 +76,7 @@ export default Actions;
 
 const styles = StyleSheet.create({
   container: {
-    height: 46,
+    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
