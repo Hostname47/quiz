@@ -1,6 +1,5 @@
 import {Share} from 'react-native';
-
-const PACKAGE_NAME = 'com.app.packagename';
+import {PACKAGE_NAME} from '@env';
 
 export const handleShare = async () => {
   try {

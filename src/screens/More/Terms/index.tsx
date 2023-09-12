@@ -3,7 +3,7 @@ import React from 'react';
 import ScreenTitle from '../../../components/ScreenTitle';
 import TermsIcon from '../../../components/icons/TermsIcon';
 
-const Terms = ({navigation}) => {
+const Terms = ({navigation}: {navigation: any}) => {
   return (
     <View style={{flex: 1}}>
       <ScreenTitle

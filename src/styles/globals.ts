@@ -22,7 +22,6 @@ export const globalStyles = StyleSheet.create({
   titleIcon: {
     width: 20,
     height: 20,
-    fill: '#4fbeff',
   },
   spaceBetween: {
     justifyContent: 'space-between',

@@ -11,7 +11,7 @@ import Space from '../../../components/common/Space';
 const PATH_TO_PRIVACY_POLICY =
   'https://website.com/apps/quiz/privacy-policy.html';
 
-const Privacy = ({navigation}) => {
+const Privacy = ({navigation}: {navigation: any}) => {
   const [state, setState] = useState<boolean | null>(null);
 
   useEffect(() => {

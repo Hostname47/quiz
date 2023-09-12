@@ -4,7 +4,7 @@ import CopyrightIcon from '../icons/CopyrightIcon';
 import Heart from './Heart';
 import Txt from '../common/Txt';
 
-const PORTFOLIO_LINK = 'https://mouad-nassri.netlify.app/';
+const PORTFOLIO_LINK = 'https://your-website.com/';
 
 const DevSignature = () => {
   const lock = useRef<boolean>(true);
@@ -36,13 +36,13 @@ const DevSignature = () => {
           by
         </Txt>
         <Txt type="ExtraBold" style={styles.designer}>
-          Mouad Nassri
+          [your name]
         </Txt>
       </View>
       <View style={styles.copyrightContainer}>
         <Txt style={styles.copyrightText}>Copyright</Txt>
         <CopyrightIcon style={styles.copyrightIcon} />
-        <Txt style={styles.copyrightText}>2023 - All rights reserved</Txt>
+        <Txt style={styles.copyrightText}>202x - All rights reserved</Txt>
       </View>
     </TouchableOpacity>
   );

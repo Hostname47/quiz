@@ -19,8 +19,8 @@ import ScreenTitle from '../../../components/ScreenTitle';
 import TextIconButton from '../../../components/buttons/TextIconButton';
 import {DropdownOptionType} from '../../../components/controls/types';
 
-const CONTACT_EMAIL_ADDRESS = 'your-email@gmail.com';
 const APP_NAME = 'Quiz app';
+const CONTACT_EMAIL_ADDRESS = 'your-email@gmail.com';
 const CONTACT_SUBJECTS: DropdownOptionType[] = [
   {value: 'Propose an improvement'},
   {value: 'Suggest a feature'},
@@ -88,7 +88,7 @@ const reducer = (state: InitialState, action: ActionProps) => {
   }
 };
 
-function Contact({navigation}) {
+function Contact({navigation}: {navigation: any}) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const messageChangeTimout = useRef<ReturnType<typeof setTimeout> | null>(

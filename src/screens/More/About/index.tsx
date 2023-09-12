@@ -5,7 +5,7 @@ import AboutIcon from '../../../components/icons/AboutIcon';
 import Space from '../../../components/common/Space';
 import {globalStyles} from '../../../styles/globals';
 
-const About = ({navigation}) => {
+const About = ({navigation}: {navigation: any}) => {
   return (
     <View style={{flex: 1}}>
       <ScreenTitle
