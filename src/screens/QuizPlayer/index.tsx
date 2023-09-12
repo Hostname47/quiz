@@ -99,6 +99,7 @@ const reducer = (state: InitialState, action: Action) => {
         supportApplied: false,
         supportAnswersToExclude: [],
         resultModalState: false,
+        correct: false,
       };
     case 'switch-result-modal':
       return {
@@ -182,12 +183,6 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
   const nextQuiz = () => {
     dispatch(setQuiz(game.quiz.level + 1));
     localDispatch({type: 'reset'});
-    if (adCounterRef.current === LEVELS_NUMBER_TO_DISPLAY_INTERSTITIAL) {
-      localDispatch({type: 'show-interstitial'});
-      adCounterRef.current = 1;
-    } else {
-      adCounterRef.current++;
-    }
   };
   const applySupport = () => {
     localDispatch({type: 'apply-support', payload: game.quiz});
@@ -271,6 +266,18 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
       }
     };
   }, [state.answer]);
+
+  useEffect(() => {
+    if (state.correct) {
+      console.log('correct');
+      if (adCounterRef.current === LEVELS_NUMBER_TO_DISPLAY_INTERSTITIAL) {
+        localDispatch({type: 'show-interstitial'});
+        adCounterRef.current = 1;
+      } else {
+        adCounterRef.current++;
+      }
+    }
+  }, [state.correct]);
 
   return (
     <View style={{flex: 1}}>
