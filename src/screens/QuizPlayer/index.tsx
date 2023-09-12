@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useReducer, useCallback} from 'react';
+import React, {useEffect, useReducer, useCallback, useRef} from 'react';
 import ScreenTitle from '../../components/ScreenTitle';
 import PlayOutlineIcon from '../../components/icons/PlayOutlineIcon';
 import {QuizAnswer, QuizItem} from '../../utils/types';
@@ -21,6 +21,14 @@ import ShopIcon from '../../components/icons/ShopIcon';
 import Actions from './components/Actions';
 import _ from 'lodash';
 import LeftArrow from '../../components/icons/LeftArrow';
+import Interstitial from '../../ads/Interstitial';
+
+/**
+ * This is used to control the display of interstitial ad whever a user pass
+ * this number of levels
+ * In this case, the user will see an interstitial ad, whenever he pass 2 levels successfully.
+ */
+const LEVELS_NUMBER_TO_DISPLAY_INTERSTITIAL = 3;
 
 type ApplySupportType = {
   type: 'apply-support';
@@ -43,7 +51,7 @@ type SwitchResultModalPayload = {
 };
 
 type ActionWithoutPayload = {
-  type: 'reset';
+  type: 'reset' | 'show-interstitial';
 };
 
 type Action =
@@ -59,6 +67,7 @@ type InitialState = {
   supportApplied: boolean;
   supportAnswersToExclude: QuizAnswer[];
   resultModalState: boolean;
+  adCounter: number;
 };
 
 const initialState: InitialState = {
@@ -67,6 +76,7 @@ const initialState: InitialState = {
   supportApplied: false,
   supportAnswersToExclude: [],
   resultModalState: false,
+  adCounter: 0,
 };
 
 const reducer = (state: InitialState, action: Action) => {
@@ -115,12 +125,18 @@ const reducer = (state: InitialState, action: Action) => {
         supportApplied: true,
       };
     }
+    case 'show-interstitial':
+      return {
+        ...state,
+        adCounter: state.adCounter + 1,
+      };
     default:
       return state;
   }
 };
 
 const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
+  const adCounterRef = useRef<number>(1);
   const game = useAppSelector(state => state.game);
   const dispatch = useAppDispatch();
   const [state, localDispatch] = useReducer(reducer, initialState);
@@ -166,6 +182,12 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
   const nextQuiz = () => {
     dispatch(setQuiz(game.quiz.level + 1));
     localDispatch({type: 'reset'});
+    if (adCounterRef.current === LEVELS_NUMBER_TO_DISPLAY_INTERSTITIAL) {
+      localDispatch({type: 'show-interstitial'});
+      adCounterRef.current = 1;
+    } else {
+      adCounterRef.current++;
+    }
   };
   const applySupport = () => {
     localDispatch({type: 'apply-support', payload: game.quiz});
@@ -276,6 +298,8 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
           />
         </View>
       </View>
+
+      <Interstitial counter={state.adCounter} />
 
       <Modal
         isVisible={state.resultModalState}
