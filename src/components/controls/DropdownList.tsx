@@ -14,14 +14,10 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import ArrowIcon from '../icons/ArrowIcon';
-
-type OptionType = {
-  value: string;
-  disabled?: boolean;
-};
+import {DropdownOptionType} from './types';
 
 type DropdownListProps = {
-  label: string;
+  label?: string;
   textSize?: number;
   iconSize?: number;
   padding?: number;
@@ -32,7 +28,7 @@ type DropdownListProps = {
   optionBoxStyles?: StyleProp<ViewStyle>;
   optionStyles?: StyleProp<ViewStyle>;
   dropDownTop?: number;
-  options: [OptionType, ...OptionType[]];
+  options: DropdownOptionType[];
   value?: string;
   onChange: (option: string) => void;
 };
@@ -52,7 +48,7 @@ const DropdownList = ({
 }: DropdownListProps) => {
   const [currentLabel, setCurrentLabel] = useState<string>('');
 
-  const handleOptionSelect = (option: OptionType) => {
+  const handleOptionSelect = (option: DropdownOptionType) => {
     if (onChange) {
       onChange(option.value);
     }

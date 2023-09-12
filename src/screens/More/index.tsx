@@ -4,6 +4,7 @@ import Home from './Home';
 import About from './About';
 import Privacy from './Privacy';
 import Terms from './Terms';
+import Contact from './contact';
 
 const More = () => {
   const Stack = createStackNavigator();
@@ -14,6 +15,7 @@ const More = () => {
       <Stack.Screen component={About} name="About" />
       <Stack.Screen component={Privacy} name="Privacy" />
       <Stack.Screen component={Terms} name="Terms" />
+      <Stack.Screen component={Contact} name="Contact" />
     </Stack.Navigator>
   );
 };
