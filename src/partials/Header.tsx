@@ -1,10 +1,12 @@
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 // import LogoText from '../icons/LogoText';
 // import Logo from '../icons/Logo';
 import MenuIcon from '../components/icons/MenuIcon';
 import {StackNavigation} from '../utils/types';
+import {APP_NAME} from '@env';
+import Txt from '../components/common/Txt';
 
 const Header = () => {
   const {navigate} = useNavigation<StackNavigation>();
@@ -12,9 +14,10 @@ const Header = () => {
   return (
     <View style={styles.container} testID="header">
       <View style={styles.logoBox}>
-        <View style={styles.logoTextContainer}>
-          {/* <Logo style={styles.logo} fill="white" />
-          <LogoText style={styles.logoText} fill="white" /> */}
+        <Image source={require('../assets/logo.png')} style={styles.logo} />
+        <View style={styles.logoTextBox}>
+          {/** example: Football Pro Quizzes */}
+          <Text style={styles.logoText}>{APP_NAME.toUpperCase()}</Text>
         </View>
       </View>
 
@@ -37,11 +40,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#32353a',
   },
-  logoBox: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-  },
   menuButton: {
     width: 66,
     height: 60,
@@ -52,23 +50,30 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
   },
-  // current: {
-  //   fill: '#60caff',
-  // },
-  logo: {
-    width: 34,
-    height: 34,
+  logoBox: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
   },
-  logoTextContainer: {
-    marginHorizontal: 6,
-    padding: 6,
+  logo: {
+    width: 38,
+    height: 38,
     backgroundColor: 'white',
     borderRadius: 4,
   },
+  logoTextBox: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 38,
+    paddingHorizontal: 12,
+    marginLeft: 8,
+    borderRadius: 4,
+    backgroundColor: 'white',
+  },
   logoText: {
-    marginHorizontal: 8,
-    height: 28,
-    width: 100,
+    letterSpacing: 1.4,
+    color: 'black',
+    fontSize: 14,
+    fontWeight: '800',
   },
 });
 

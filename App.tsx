@@ -42,7 +42,7 @@ function App(): JSX.Element {
               <Screen name="More" component={More} />
             </Navigator>
             {/* <Banner /> */}
-            <View style={styles.banner} />
+            <Banner />
           </Provider>
         </SafeAreaView>
       </NavigationContainer>

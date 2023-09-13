@@ -18,8 +18,8 @@ import DropdownList from '../../../components/controls/DropdownList';
 import ScreenTitle from '../../../components/ScreenTitle';
 import TextIconButton from '../../../components/buttons/TextIconButton';
 import {DropdownOptionType} from '../../../components/controls/types';
+import {APP_NAME} from '@env';
 
-const APP_NAME = 'Quiz app';
 const CONTACT_EMAIL_ADDRESS = 'your-email@gmail.com';
 const CONTACT_SUBJECTS: DropdownOptionType[] = [
   {value: 'Propose an improvement'},
