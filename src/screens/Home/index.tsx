@@ -1,8 +1,6 @@
 import {StyleSheet, Image, View, TouchableOpacity, Text} from 'react-native';
 import React, {useState} from 'react';
 import GameHeader from '../../partials/GameHeader';
-import Txt from '../../components/common/Txt';
-import QuestionIcon from '../../components/icons/QuestionIcon';
 import ShopIcon from '../../components/icons/ShopIcon';
 import Space from '../../components/common/Space';
 import GearIcon from '../../components/icons/GearIcon';
@@ -10,6 +8,8 @@ import PlayIcon from '../../components/icons/PlayIcon';
 import SettingsSection from './SettingsSection';
 // import {StackNavigationProps} from '../../utils/types';
 import {useAppSelector} from '../../app/hooks';
+import {APP_NAME} from '@env';
+import LeftFeather from '../../components/icons/Feather';
 
 /**
  * We'll enable typing later
@@ -30,11 +30,19 @@ const Home = ({navigation}: {navigation: any}) => {
     <View style={styles.container}>
       <GameHeader />
       <View style={styles.titleContainer}>
-        <QuestionIcon style={styles.titleIcon} />
-        <Txt style={styles.title} type="ExtraBold">
-          Calisthenics Quiz
-        </Txt>
-        <QuestionIcon style={styles.titleIcon} />
+        <View style={styles.titleBox}>
+          <LeftFeather width={16} height={16} fill="white" />
+          <Text style={styles.title}>{APP_NAME}</Text>
+          <LeftFeather
+            width={16}
+            height={16}
+            fill="white"
+            style={{transform: [{rotateY: '180deg'}]}}
+          />
+        </View>
+        <Text style={styles.subtitle}>
+          Test Your Calisthenics Knowledge with Calisthenics Quiz
+        </Text>
       </View>
 
       <View style={styles.bootstrapImageContainer}>
@@ -55,9 +63,7 @@ const Home = ({navigation}: {navigation: any}) => {
           activeOpacity={0.5}>
           <ShopIcon fill="#e3e8ed" style={styles.buttonIcon} />
           <Space distance={8} />
-          <Txt type="Bold" style={styles.buttonTitle}>
-            Store
-          </Txt>
+          <Text style={styles.buttonTitle}>Store</Text>
         </TouchableOpacity>
         <Space distance={12} />
         {/* Settings button */}
@@ -69,9 +75,7 @@ const Home = ({navigation}: {navigation: any}) => {
           activeOpacity={0.5}>
           <GearIcon fill="#e3e8ed" style={styles.buttonIcon} />
           <Space distance={8} />
-          <Txt type="Bold" style={styles.buttonTitle}>
-            Settings
-          </Txt>
+          <Text style={styles.buttonTitle}>Settings</Text>
         </TouchableOpacity>
       </View>
       {/* Play button */}
@@ -83,9 +87,7 @@ const Home = ({navigation}: {navigation: any}) => {
         activeOpacity={0.5}>
         <PlayIcon fill="#4fbeff" style={styles.buttonIcon} />
         <Space distance={12} />
-        <Txt type="ExtraBold" style={styles.playButtonTitle}>
-          Press here to start
-        </Txt>
+        <Text style={styles.playButtonTitle}>Press Here To Start</Text>
       </TouchableOpacity>
 
       <SettingsSection
@@ -103,42 +105,50 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 16,
   },
+  titleBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   title: {
-    fontSize: 20,
-    letterSpacing: 0.6,
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 1.6,
     marginHorizontal: 8,
   },
-  titleIcon: {
-    width: 24,
-    height: 24,
-    fill: 'white',
+  subtitle: {
+    textAlign: 'center',
+    paddingHorizontal: 20,
+    marginTop: 6,
+    letterSpacing: 1,
+    lineHeight: 20,
+    fontSize: 13,
   },
   bootstrapImageContainer: {
-    height: 200,
+    height: 180,
     backgroundColor: 'black',
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: '#484c56',
   },
   bootstrapImage: {
-    opacity: 0.4,
+    opacity: 0.9,
     flex: 1,
     width: undefined,
     height: undefined,
   },
   buttonsContainer: {
-    padding: 12,
+    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
   button: {
-    paddingHorizontal: 12,
-    paddingVertical: 16,
+    paddingVertical: 14,
     backgroundColor: '#1a1b1e',
     borderRadius: 6,
     flexDirection: 'row',
@@ -147,11 +157,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonIcon: {
-    width: 20,
-    height: 20,
+    width: 19,
+    height: 19,
   },
   buttonTitle: {
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: '700',
     letterSpacing: 0.6,
     color: '#e3e8ed',
   },
@@ -161,7 +172,8 @@ const styles = StyleSheet.create({
   },
   playButtonTitle: {
     color: '#4fbeff',
-    fontSize: 20,
-    letterSpacing: 0.4,
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 1,
   },
 });

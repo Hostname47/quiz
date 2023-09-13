@@ -17,7 +17,7 @@ export default GameHeader;
 
 const styles = StyleSheet.create({
   container: {
-    height: 76,
+    height: 70,
     flexDirection: 'row',
     backgroundColor: '#373a42',
     borderBottomWidth: 1,

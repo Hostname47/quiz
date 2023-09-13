@@ -2,7 +2,7 @@ export const DEFAULT_USER_PSEUDO: string = 'pseudo7';
 export const DEFAULT_USER_AVATAR: number = 1;
 
 export const gameDefaults = {
-  money: 800,
+  money: 40,
   helps: 3,
   lives: 3,
   level: 1,

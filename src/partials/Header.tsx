@@ -1,12 +1,9 @@
 import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-// import LogoText from '../icons/LogoText';
-// import Logo from '../icons/Logo';
 import MenuIcon from '../components/icons/MenuIcon';
 import {StackNavigation} from '../utils/types';
 import {APP_NAME} from '@env';
-import Txt from '../components/common/Txt';
 
 const Header = () => {
   const {navigate} = useNavigation<StackNavigation>();
@@ -16,7 +13,6 @@ const Header = () => {
       <View style={styles.logoBox}>
         <Image source={require('../assets/logo.png')} style={styles.logo} />
         <View style={styles.logoTextBox}>
-          {/** example: Football Pro Quizzes */}
           <Text style={styles.logoText}>{APP_NAME.toUpperCase()}</Text>
         </View>
       </View>
@@ -55,15 +51,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   logo: {
-    width: 38,
-    height: 38,
+    width: 36,
+    height: 36,
     backgroundColor: 'white',
     borderRadius: 4,
   },
   logoTextBox: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 38,
+    height: 36,
     paddingHorizontal: 12,
     marginLeft: 8,
     borderRadius: 4,
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
   logoText: {
     letterSpacing: 1.4,
     color: 'black',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '800',
   },
 });

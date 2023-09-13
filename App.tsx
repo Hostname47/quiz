@@ -41,7 +41,6 @@ function App(): JSX.Element {
               <Screen name="Shop" component={Shop} />
               <Screen name="More" component={More} />
             </Navigator>
-            {/* <Banner /> */}
             <Banner />
           </Provider>
         </SafeAreaView>
