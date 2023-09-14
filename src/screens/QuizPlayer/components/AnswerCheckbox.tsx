@@ -23,9 +23,9 @@ export default AnswerCheckbox;
 
 const styles = StyleSheet.create({
   box: {
-    width: 18,
-    height: 18,
-    borderRadius: 5,
+    width: 15,
+    height: 15,
+    borderRadius: 3,
     borderWidth: 2.4,
     borderColor: '#eaeced',
     alignItems: 'center',
@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
   },
   dot: {
     position: 'absolute',
-    width: 8,
-    height: 8,
-    borderRadius: 2,
+    width: 7,
+    height: 7,
+    borderRadius: 1,
   },
   green: {
     backgroundColor: '#56e264',

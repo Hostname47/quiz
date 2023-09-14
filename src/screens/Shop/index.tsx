@@ -44,12 +44,14 @@ const Shop = ({navigation}: {navigation: any}) => {
     try {
       if (game.money >= LIVES_PRICE) {
         const userGame = await AsyncStorage.getItem('game');
-        const userGameObject = JSON.parse(userGame);
-        userGameObject.lives = userGameObject.lives + LIVES_NUMBER_TO_BUY;
-        userGameObject.money = userGameObject.money - LIVES_PRICE;
-        await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
+        if (userGame) {
+          const userGameObject = JSON.parse(userGame);
+          userGameObject.lives = userGameObject.lives + LIVES_NUMBER_TO_BUY;
+          userGameObject.money = userGameObject.money - LIVES_PRICE;
+          await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
 
-        dispatch(buyLives());
+          dispatch(buyLives());
+        }
       }
     } catch (error) {
       // Show an error as toast notification
@@ -65,14 +67,16 @@ const Shop = ({navigation}: {navigation: any}) => {
     lock.current = false;
 
     try {
-      if (game.money >= LIVES_PRICE) {
+      if (game.money >= HELPS_PRICE) {
         const userGame = await AsyncStorage.getItem('game');
-        const userGameObject = JSON.parse(userGame);
-        userGameObject.helps += HELPS_NUMBER_TO_BUY;
-        userGameObject.money -= HELPS_PRICE;
-        await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
+        if (userGame) {
+          const userGameObject = JSON.parse(userGame);
+          userGameObject.helps += HELPS_NUMBER_TO_BUY;
+          userGameObject.money -= HELPS_PRICE;
+          await AsyncStorage.setItem('game', JSON.stringify(userGameObject));
 
-        dispatch(buyHelps());
+          dispatch(buyHelps());
+        }
       }
     } catch (error) {
       // Show an error as toast notification
@@ -153,7 +157,10 @@ const Shop = ({navigation}: {navigation: any}) => {
             <HelpIcon style={styles.leftIcon} fill="#ede43b" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
 
-            <TouchableOpacity style={styles.button} onPress={buyHelpings}>
+            <TouchableOpacity
+              style={[styles.button, game.money < 40 && {opacity: 0.7}]}
+              onPress={buyHelpings}
+              disabled={game.money < 40 || !lock.current}>
               <Text style={styles.number}>40</Text>
               <Space distance={6} />
               <DollarIcon style={styles.currency} fill="#6cdd6e" />
@@ -165,7 +172,10 @@ const Shop = ({navigation}: {navigation: any}) => {
             <HeartIcon style={styles.leftIcon} fill="#ff5656" />
             <RightArrow style={styles.arrow} fill="#a4b3bc" />
 
-            <TouchableOpacity style={styles.button} onPress={buyHearts}>
+            <TouchableOpacity
+              style={[styles.button, game.money < 60 && {opacity: 0.7}]}
+              onPress={buyHearts}
+              disabled={game.money < 60 || !lock.current}>
               <Text style={styles.number}>60</Text>
               <Space distance={6} />
               <DollarIcon style={styles.currency} fill="#6cdd6e" />

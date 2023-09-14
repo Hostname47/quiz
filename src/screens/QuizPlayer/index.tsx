@@ -299,7 +299,7 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
         <View>
           <FlatList
             data={game.quiz.options}
-            ItemSeparatorComponent={() => <Space vertical distance={5} />}
+            ItemSeparatorComponent={() => <Space vertical distance={3} />}
             keyExtractor={o => o.toString()}
             renderItem={renderAnswer}
           />
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingVertical: 12,
     backgroundColor: '#111214',
     borderRadius: 3,
     borderColor: '#111214',

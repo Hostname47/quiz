@@ -41,6 +41,7 @@ export const initializeGame = createAsyncThunk(
   'game/initialize',
   async (_, {rejectWithValue}) => {
     try {
+      // await AsyncStorage.removeItem('game');
       const gameData = await AsyncStorage.getItem('game');
 
       if (gameData === null) {

@@ -5,7 +5,7 @@ A simple quiz application that offers a simple UI and a straightforward screens 
 Please **do the following actions before build the app** :
 
 - 1 - run the following command :
-  **cp .env .env.example**
+  **cp .env.example .env**
   _(or manually copy the .env.example file in the root directory and rename it to .env)_
 
 - 2 - Open your **admobe** account (Create one if you don't have already an account), and create two applications: one for Android and one for iOS.
