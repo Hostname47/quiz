@@ -30,13 +30,13 @@ import {QuizItem} from '../utils/types';
   {
     level: 4,
     type: 'image-with-hints',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'],
     hints: [
       { type: 'text', value: 'hint 1'},
-      { type: 'image', value: require('./quizzes-images/roberto.png')},
+      { type: 'image', value: require('./quizzes-images/morocco.jpg')},
       { type: 'text', value: 'hint 3'},
-      { type: 'image', value: require('./quizzes-images/roberto.png')},
+      { type: 'image', value: require('./quizzes-images/morocco.jpg')},
     ],
     answer: 'Answer 4',
   }
@@ -61,7 +61,7 @@ export const quizzes: QuizItem[] = [
     level: 3,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -73,7 +73,7 @@ export const quizzes: QuizItem[] = [
   {
     level: 4,
     type: 'image-with-hints',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: ['Answer 1', 'Answer 2', 'Answer 3', 'Answer 4'],
     hints: [
       {
@@ -82,7 +82,7 @@ export const quizzes: QuizItem[] = [
       },
       {
         type: 'image',
-        value: require('./quizzes-images/roberto.png'),
+        value: require('./quizzes-images/morocco.jpg'),
       },
       {
         type: 'text',
@@ -90,7 +90,7 @@ export const quizzes: QuizItem[] = [
       },
       {
         type: 'image',
-        value: require('./quizzes-images/roberto.png'),
+        value: require('./quizzes-images/morocco.jpg'),
       },
     ],
     answer: 'Answer 4',
@@ -99,7 +99,7 @@ export const quizzes: QuizItem[] = [
     level: 5,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -112,7 +112,7 @@ export const quizzes: QuizItem[] = [
     level: 6,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -125,7 +125,7 @@ export const quizzes: QuizItem[] = [
     level: 7,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -138,7 +138,7 @@ export const quizzes: QuizItem[] = [
     level: 8,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -151,7 +151,7 @@ export const quizzes: QuizItem[] = [
     level: 9,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -164,7 +164,7 @@ export const quizzes: QuizItem[] = [
     level: 10,
     type: 'image',
     question: 'Who is this player ?',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: [
       'Paolo Maldini',
       'Daniele Massaro',
@@ -176,7 +176,7 @@ export const quizzes: QuizItem[] = [
   {
     level: 11,
     type: 'image-with-hints',
-    image: require('./quizzes-images/roberto.png'),
+    image: require('./quizzes-images/morocco.jpg'),
     options: ['Answer1', 'Answer 2', 'Answer 3', 'Answer 4'],
     hints: [
       {
