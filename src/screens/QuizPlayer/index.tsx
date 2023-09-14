@@ -22,6 +22,9 @@ import Actions from './components/Actions';
 import _ from 'lodash';
 import LeftArrow from '../../components/icons/LeftArrow';
 import Interstitial from '../../ads/Interstitial';
+import {globalStyles} from '../../styles/globals';
+import TextIconButton from '../../components/buttons/TextIconButton';
+import TextButton from '../../components/buttons/TextButton';
 
 /**
  * This is used to control the display of interstitial ad whever a user pass
@@ -45,8 +48,8 @@ type EvaluateAnswerActionType = {
   payload: boolean;
 };
 
-type SwitchResultModalPayload = {
-  type: 'switch-result-modal';
+type SwitchModalPayload = {
+  type: 'switch-result-modal' | 'switch-quit-modal';
   payload: boolean;
 };
 
@@ -59,7 +62,7 @@ type Action =
   | AnswerActionType
   | EvaluateAnswerActionType
   | ApplySupportType
-  | SwitchResultModalPayload;
+  | SwitchModalPayload;
 
 type InitialState = {
   answer: QuizAnswer;
@@ -67,6 +70,7 @@ type InitialState = {
   supportApplied: boolean;
   supportAnswersToExclude: QuizAnswer[];
   resultModalState: boolean;
+  quitModalState: boolean;
   adCounter: number;
 };
 
@@ -76,6 +80,7 @@ const initialState: InitialState = {
   supportApplied: false,
   supportAnswersToExclude: [],
   resultModalState: false,
+  quitModalState: false,
   adCounter: 0,
 };
 
@@ -105,6 +110,11 @@ const reducer = (state: InitialState, action: Action) => {
       return {
         ...state,
         resultModalState: action.payload,
+      };
+    case 'switch-quit-modal':
+      return {
+        ...state,
+        quitModalState: action.payload,
       };
     case 'apply-support': {
       const quiz = action.payload;
@@ -144,6 +154,9 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
 
   const switchResultModal = useCallback((to: boolean = false) => {
     localDispatch({type: 'switch-result-modal', payload: to});
+  }, []);
+  const switchQuitModal = useCallback((to: boolean = false) => {
+    localDispatch({type: 'switch-quit-modal', payload: to});
   }, []);
   const goToStore = () => {
     navigation.navigate('Shop');
@@ -278,6 +291,20 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
       }
     }
   }, [state.correct]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
+      if (state.quitModalState || state.answer) {
+        switchQuitModal(false);
+        return;
+      }
+
+      e.preventDefault();
+      switchQuitModal(true);
+    });
+
+    return unsubscribe;
+  }, [state.quitModalState, state.answer]);
 
   return (
     <View style={{flex: 1}}>
@@ -417,6 +444,34 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
             )}
           </>
         )}
+      </Modal>
+
+      <Modal
+        isVisible={state.quitModalState}
+        onBackButtonPress={() => switchQuitModal(false)}
+        onBackdropPress={() => switchQuitModal(false)}>
+        <Title title="Confirmation" size={18} />
+        <Space vertical distance={6} />
+        <Text style={globalStyles.text}>
+          Are you sure you want to exit the quiz !?
+        </Text>
+        <Text style={globalStyles.text}>Press 'Exit' button to confirm</Text>
+        <Space vertical distance={12} />
+        <View style={globalStyles.row}>
+          <TextButton
+            title="Cancel"
+            onPress={() => switchQuitModal(false)}
+            padding={17}
+          />
+          <Space distance={8} />
+          <TextIconButton
+            title="Exit"
+            Icon={LeftArrow}
+            primary
+            onPress={navigation.goBack}
+            styles={{flex: 1}}
+          />
+        </View>
       </Modal>
     </View>
   );

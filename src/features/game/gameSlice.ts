@@ -46,7 +46,8 @@ export const initializeGame = createAsyncThunk(
 
       if (gameData === null) {
         const game = JSON.stringify({
-          money: gameDefaults.money,
+          // money: gameDefaults.money,
+          money: 800,
           lives: gameDefaults.lives,
           helps: gameDefaults.helps,
           level: gameDefaults.level,

@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     overflow: 'hidden',
-    maxHeight: 220,
+    maxHeight: 260,
   },
 });
