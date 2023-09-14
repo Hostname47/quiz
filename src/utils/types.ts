@@ -44,7 +44,7 @@ export type QuestionHint =
       value: ImageSourcePropType;
     };
 
-export type ImageWithHintsQuiz = Quiz & {
+export type ImageWithHintsQuiz = TextQuiz & {
   image: any;
   hints: QuestionHint[];
 };
