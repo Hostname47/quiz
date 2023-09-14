@@ -2,29 +2,46 @@
 
 A simple quiz application that offers a simple UI and a straightforward screens and logic.
 
+## Installation Guide
+
 Please **do the following actions before build the app** :
 
 - 1 - run the following command :
-  **cp .env.example .env**
+  
+      cp .env.example .env
+  
   _(or manually copy the .env.example file in the root directory and rename it to .env)_
 
-- 2 - Open your **admobe** account (Create one if you don't have already an account), and create two applications: one for Android and one for iOS.
+- 2 - Open your **Admob** account (Create one if you don't have already an account), and create two applications: one for Android and one for iOS.
 
-- 3 - Copy the **App ID** for your android/ios apps from admob (Home -> Select the app -> App Settings -> App ID), and past them in app.json file in the root directory (within android_app_id & ios_app_id properties).
+- 3 - After creating the applications on your Admob, copy the **App ID** for your android & ios apps, and past them in **app.json** file in the root directory (within android_app_id & ios_app_id properties). You can find the App ID by going to:
 
-- 4 - Within your Admobe app, create 3 Ad units: Banner, Interstitial, and Rewarded Ads.
+       Admobe Home -> Select the app -> App Settings -> App ID
+
+- 4 - Within your Admobe app, create 3 Ad units: **Banner**, **Interstitial**, and **Rewarded Ads**.
   In rewarded ad, please specify :
 
-  1.  Reward amount = 10
-  2.  reward item = $
+    1. Reward amount = 10
+  
+    2. reward item = $
 
-- 5 - After creating all the 3 ad units, go to :  
-  Admobe -> Select the app -> Ad Units : copy the ID for each ad unit (banner, interstitial and rewarded), and past them in .env file properties (ADMOB_BANNER_UNIT_ID, ADMOB_INTERSTITIAL_UNIT_ID, ADMOB_REWARDED_UNIT_ID respectively)
+- 5 - After creating all the 3 ad units, go to :
+  
+      Admobe -> Select the app -> Ad Units
+
+    Copy the Ad Unit for each ad (banner, interstitial and rewarded), and past them in .env file properties ADMOB_BANNER_UNIT_ID, ADMOB_INTERSTITIAL_UNIT_ID, ADMOB_REWARDED_UNIT_ID    respectively.
 
 - 6 - Then, install all required libraries and dependencies by running:
-  **yarn install**
+
+      yarn install
+  
 - 7 - Finally run your app on you device or emulator :
-  **npx react-native run-android**
+  
+      npx react-native run-android
+
+## Usage Guide
+
+Usage guide
 
 ### Note
 
