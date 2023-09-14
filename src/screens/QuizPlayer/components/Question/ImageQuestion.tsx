@@ -1,13 +1,18 @@
-import {StyleSheet, Image, Text, View} from 'react-native';
-import React from 'react';
+import {StyleSheet, Image, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 import {ImageQuiz} from '../../../../utils/types';
 
 const ImageQuestion = ({quiz}: {quiz: ImageQuiz}) => {
+  const [fullscreen, setFullscreen] = useState(false);
+
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <TouchableOpacity
+        onPress={() => setFullscreen(v => !v)}
+        style={[styles.imageContainer, fullscreen ? styles.fullscreen : {}]}
+        activeOpacity={0.9}>
         <Image source={quiz.image} style={styles.image} />
-      </View>
+      </TouchableOpacity>
       <View style={styles.questionContainer}>
         <Text style={styles.question}>{quiz.question}</Text>
       </View>
@@ -22,6 +27,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  fullscreen: {
+    position: 'absolute',
+    zIndex: 5,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 1,
+    backgroundColor: 'black',
   },
   imageContainer: {
     alignItems: 'center',
@@ -41,9 +55,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 8,
     backgroundColor: '#111214',
+    marginTop: 'auto',
   },
   question: {
-    fontWeight: '400',
+    fontWeight: '600',
     letterSpacing: 0.6,
     fontSize: 14,
     lineHeight: 22,

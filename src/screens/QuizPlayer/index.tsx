@@ -294,7 +294,7 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
-      if (state.quitModalState || state.answer) {
+      if (state.quitModalState || state.answer || game.lives === 0) {
         switchQuitModal(false);
         return;
       }
@@ -304,7 +304,7 @@ const QuizPlayer = ({navigation, route}: {navigation: any; route: any}) => {
     });
 
     return unsubscribe;
-  }, [state.quitModalState, state.answer]);
+  }, [state.quitModalState, state.answer, game.lives]);
 
   return (
     <View style={{flex: 1}}>
