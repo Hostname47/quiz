@@ -25,7 +25,7 @@ import {QuizItem} from '../utils/types';
     answer: 'Manchester City',
   }
 */
-// 3. Image question with hints (hints can be a text or image in quizzes-images)
+// 3. Image question with hints (hints can be a text or image)
 /* 
   {
     level: 4,
