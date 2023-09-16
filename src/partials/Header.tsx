@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import MenuIcon from '../components/icons/MenuIcon';
 import {StackNavigation} from '../utils/types';
 import {APP_NAME} from '@env';
+import Txt from '../components/common/Txt';
 
 const Header = () => {
   const {navigate} = useNavigation<StackNavigation>();
@@ -13,7 +14,9 @@ const Header = () => {
       <View style={styles.logoBox}>
         <Image source={require('../assets/logo.png')} style={styles.logo} />
         <View style={styles.logoTextBox}>
-          <Text style={styles.logoText}>{APP_NAME.toUpperCase()}</Text>
+          <Txt type="ExtraBold" style={styles.logoText}>
+            {APP_NAME.toUpperCase()}
+          </Txt>
         </View>
       </View>
 
@@ -51,8 +54,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   logo: {
-    width: 36,
-    height: 36,
+    width: 34,
+    height: 34,
     backgroundColor: 'white',
     borderRadius: 4,
   },
@@ -66,10 +69,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   logoText: {
-    letterSpacing: 1.4,
+    letterSpacing: 1,
     color: 'black',
-    fontSize: 13,
-    fontWeight: '800',
+    fontSize: 14,
   },
 });
 

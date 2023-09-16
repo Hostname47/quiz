@@ -6347,10 +6347,10 @@ react-native-gesture-handler@^2.12.1:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-google-mobile-ads@^12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-google-mobile-ads/-/react-native-google-mobile-ads-12.1.0.tgz#6c9f525816f377166e48227ced5b34fd6fe3874e"
-  integrity sha512-Pnztjev9UH+Gd9syfUMraCIsEPb1lsuuEMop1nok2fEDTJJRpQ+ZlQtv7bmI9sju0saSPv4P8HNSV2rmTUZYeQ==
+react-native-google-mobile-ads@11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-google-mobile-ads/-/react-native-google-mobile-ads-11.1.1.tgz#065fb549ae68afd3d03f645469530d950aa41130"
+  integrity sha512-5AeGjyWc/MVGTw6vUWjNe609KWrH5eoY4vQ2gy70MVcPnxSlSzoTUvAe6Prqms9ciMTrgMf+wB1JmTMinIbdSg==
   dependencies:
     "@iabtcf/core" "^1.5.3"
     use-deep-compare-effect "^1.8.1"

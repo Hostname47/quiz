@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaView, StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
@@ -11,19 +11,19 @@ import QuizzesMap from './src/screens/QuizzesMap';
 import QuizPlayer from './src/screens/QuizPlayer';
 import More from './src/screens/More';
 import Shop from './src/screens/Shop';
-// import {RootStackParamList} from './src/utils/types';
 import Header from './src/partials/Header';
 import BootstrapState from './src/components/BootstrapState';
 import {navigationTheme} from './src/utils/navigation-theme';
 import {MenuProvider} from 'react-native-popup-menu';
 import Banner from './src/ads/Banner';
 
-// const {Screen, Navigator} = createStackNavigator<RootStackParamList>(); // temporarily disable typing navigation
 const {Screen, Navigator} = createStackNavigator();
 
 function App(): JSX.Element {
   useEffect(() => {
-    mobileAds().initialize();
+    mobileAds()
+      .initialize()
+      .then(adapterStatuses => {});
   }, []);
 
   return (
@@ -48,14 +48,5 @@ function App(): JSX.Element {
     </MenuProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  banner: {
-    height: 50,
-    width: 320,
-    backgroundColor: 'black',
-    alignSelf: 'center',
-  },
-});
 
 export default App;
